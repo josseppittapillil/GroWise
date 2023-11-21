@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:growwise/pages/front.dart';
+import 'package:growwise/pages/home.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -139,7 +140,13 @@ class RegisterPage extends StatelessWidget {
                     35 * fem, 18 * fem, 0 * fem, 19 * fem),
                 width: 330 * fem,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomeScreen()),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
                     backgroundColor: const Color(0xff02841e),
