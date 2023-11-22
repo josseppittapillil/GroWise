@@ -1,100 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class YourPage extends StatelessWidget {
-  const YourPage({super.key});
+  const YourPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    const double fem = 1.0; // Replace with your actual scaling factor
-    const double ffem = 1.0; // Replace with your actual scaling factor
+    return FutureBuilder(
+      future: _getCurrentLocation(),
+      builder: (BuildContext context, AsyncSnapshot<Position> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // You can show a loading indicator here if needed
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          // Handle error
+          return const Center(
+            child: Text('Error fetching location'),
+          );
+        } else {
+          Position? currentLocation = snapshot.data;
+          return _buildUI(currentLocation);
+        }
+      },
+    );
+  }
+
+  Future<Position> _getCurrentLocation() async {
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+  }
+
+  Widget _buildUI(Position? currentLocation) {
+    // Your existing UI code here
 
     return SizedBox(
       width: double.infinity,
-      height: 812 * fem, // Adjust the height accordingly
+      height: 812, // Adjust the height accordingly
       child: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Stack(
           children: [
-            Positioned(
-              left: 0 * fem,
-              top: 0 * fem,
-              child: Container(
-                width: 375 * fem,
-                height: 812 * fem,
-                decoration: const BoxDecoration(
-                  color: Color(0xffffffff),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: -1366 * fem,
-                      top: -630 * fem,
-                      child: Align(
-                        child: SizedBox(
-                          width: 3002 * fem,
-                          height: 2000 * fem,
-                          child: Image.network(
-                            '[Image url]',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
+            // Existing code...
+            const Positioned(
+              left: 22.5,
+              top: 676,
+              child: Align(
+                child: SizedBox(
+                  width: 331,
+                  height: 18,
+                  child: Text(
+                    'Place the pin on Your accurate location on the map',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Urbanist',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      height: 1.2,
+                      color: Color(0xffffffff),
                     ),
-                    Positioned(
-                      left: 148 * fem,
-                      top: 327 * fem,
-                      child: Align(
-                        child: SizedBox(
-                          width: 79 * fem,
-                          height: 79 * fem,
-                          child: Image.network(
-                            '[Image url]',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const Positioned(
-                      left: 22.5 * fem,
-                      top: 676 * fem,
-                      child: Align(
-                        child: SizedBox(
-                          width: 331 * fem,
-                          height: 18 * fem,
-                          child: Text(
-                            'Place the pin on Your accurate location on the map',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'Urbanist',
-                              fontSize: 15 * ffem,
-                              fontWeight: FontWeight.w600,
-                              height: 1.2 * ffem / fem,
-                              color: Color(0xffffffff),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
             Positioned(
-              left: 23 * fem,
-              top: 718 * fem,
+              left: 23,
+              top: 718,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Handle button press, and use currentLocation.latitude
+                  // and currentLocation.longitude for location information
+                },
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
                 ),
                 child: SizedBox(
-                  width: 330 * fem,
-                  height: 56 * fem,
+                  width: 330,
+                  height: 56,
                   child: Container(
                     color: const Color(0xff02841e),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8 * fem),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Center(
                       child: Text(
@@ -102,9 +88,9 @@ class YourPage extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Urbanist',
-                          fontSize: 15 * ffem,
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
-                          height: 1.2 * ffem / fem,
+                          height: 1.2,
                           color: Color(0xffffffff),
                         ),
                       ),
@@ -114,12 +100,12 @@ class YourPage extends StatelessWidget {
               ),
             ),
             Positioned(
-              left: 20 * fem,
-              top: 63 * fem,
+              left: 20,
+              top: 63,
               child: Align(
                 child: SizedBox(
-                  width: 41 * fem,
-                  height: 41 * fem,
+                  width: 41,
+                  height: 41,
                   child: TextButton(
                     onPressed: () {},
                     style: TextButton.styleFrom(
@@ -127,8 +113,8 @@ class YourPage extends StatelessWidget {
                     ),
                     child: Image.network(
                       '[Image url]',
-                      width: 41 * fem,
-                      height: 41 * fem,
+                      width: 41,
+                      height: 41,
                     ),
                   ),
                 ),
