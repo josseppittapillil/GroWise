@@ -1,83 +1,125 @@
 import 'package:flutter/material.dart';
 
-class CommunityPage extends StatefulWidget {
+class AiBotScreen extends StatefulWidget {
+  const AiBotScreen({Key? key}) : super(key: key);
+
   @override
-  _CommunityPageState createState() => _CommunityPageState();
+  // ignore: library_private_types_in_public_api
+  _AiBotScreenState createState() => _AiBotScreenState();
 }
 
-class _CommunityPageState extends State<CommunityPage> {
-  List<String> posts = [];
-  TextEditingController _postController = TextEditingController();
-
-  @override
-  void dispose() {
-    _postController.dispose();
-    super.dispose();
-  }
+class _AiBotScreenState extends State<AiBotScreen> {
+  final TextEditingController _messageController = TextEditingController();
+  final List<ChatMessage> _messages = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text(
+          'GroWise Bot',
+          style: TextStyle(color: Colors.black),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.chat, color: Colors.black),
+            onPressed: () {
+              // Handle chat icon press
+            },
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.separated(
-              itemCount: posts.length,
-              separatorBuilder: (context, index) => Divider(),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(posts[index]),
-                );
-              },
+            child: Container(
+              color: Colors.black,
+              child: ListView.builder(
+                itemCount: _messages.length,
+                reverse: true,
+                itemBuilder: (context, index) {
+                  return _messages[index];
+                },
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _postController,
-                    decoration: InputDecoration(
-                      hintText: 'Share Your Thoughts',
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.deepPurple), // Set the line color
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.deepPurple), // Set the line color
-                      ),
-                    ),
-                    cursorColor: Colors.deepPurple[200],
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    _postThought();
-                  },
-                ),
-              ],
+          _buildMessageBar(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMessageBar() {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      color: Colors.white,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _messageController,
+              decoration: const InputDecoration(
+                hintText: 'Type a message...',
+                border: InputBorder.none,
+              ),
             ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.send),
+            onPressed: () {
+              _sendMessage();
+            },
           ),
         ],
       ),
     );
   }
 
-  void _postThought() {
-    String newPost = _postController.text;
-    if (newPost.isNotEmpty) {
+  void _sendMessage() {
+    String message = _messageController.text.trim();
+    if (message.isNotEmpty) {
       setState(() {
-        posts.add(newPost);
-        _postController.clear();
+        _messages.insert(0, ChatMessage(text: message, isUser: true));
+        // Call your AI service here and handle the AI response
+        _messages.insert(
+            0, const ChatMessage(text: 'AI Response', isUser: false));
+        _messageController.clear();
       });
     }
   }
 }
 
-void main() {
-  runApp(MaterialApp(home: CommunityPage()));
+class ChatMessage extends StatelessWidget {
+  final String text;
+  final bool isUser;
+
+  const ChatMessage({required this.text, required this.isUser, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.all(8.0),
+      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+      child: Material(
+        borderRadius: BorderRadius.circular(8.0),
+        color: isUser ? Colors.blue : Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            text,
+            style: TextStyle(color: isUser ? Colors.white : Colors.black),
+          ),
+        ),
+      ),
+    );
+  }
 }
