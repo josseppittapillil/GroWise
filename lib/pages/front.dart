@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:growwise/pages/login.dart';
-import 'package:growwise/pages/register.dart';
+import 'package:growise/pages/login.dart';
+import 'package:growise/pages/register.dart';
 
 class FrontPage extends StatelessWidget {
   const FrontPage({super.key});
