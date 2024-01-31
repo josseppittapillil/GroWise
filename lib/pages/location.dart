@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
-class YourPage extends StatelessWidget {
-  const YourPage({Key? key}) : super(key: key);
+class Locator extends StatelessWidget {
+  const Locator({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
