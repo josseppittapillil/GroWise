@@ -1,5 +1,8 @@
+//import 'dart:html';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:growise/pages/homepage.dart';
+//import 'package:growise/pages/location.dart';
 
 class ImageItem {
   final String imagePath;
@@ -42,7 +45,7 @@ class HomeScreen extends StatelessWidget {
     // Add more items as needed
   ];
 
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +73,7 @@ class HomeScreen extends StatelessWidget {
               left: 20.0,
               child: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                color: const Color.fromARGB(255, 3, 3, 3),
+                color: Colors.white,
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -83,22 +86,26 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.white.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: Column(
                   children: [
                     Row(
-                      children: const [
-                        Icon(Icons.search, color: Colors.green),
-                        SizedBox(width: 5.0),
+                      children: [
+                        const Icon(Icons.search,
+                            color: Color.fromARGB(255, 0, 204, 31)),
+                        const SizedBox(width: 5.0),
                         Expanded(
                           child: TextField(
+                            style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               hintText: 'Search...',
-                              border: OutlineInputBorder(
+                              hintStyle: TextStyle(
+                                  color: Colors.white.withOpacity(0.7)),
+                              border: const OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
+                                    BorderRadius.all(Radius.circular(50.0)),
                                 borderSide: BorderSide.none,
                               ),
                               filled: true,
@@ -109,19 +116,17 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 50.0),
-                    SizedBox(
+                    Container(
                       width: double.infinity,
-                      child: Container(
-                        color: Colors.green, // Green background
-                        padding: const EdgeInsets.all(10.0),
-                        child: const Text(
-                          'CHOOSE YOUR CROP',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                      color: Colors.green,
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text(
+                        'CHOOSE YOUR CROP',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -133,25 +138,29 @@ class HomeScreen extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         itemCount: yourImageList.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            margin: const EdgeInsets.all(8.0),
+                          return Card(
+                            elevation: 5.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
                             child: Column(
                               children: [
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(-1.0),
                                   child: Image.asset(
                                     yourImageList[index].imagePath,
-                                    width: 150,
-                                    height: 250,
+                                    width: 180,
+                                    height: 220,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 30),
                                 Text(
                                   yourImageList[index].imageName,
                                   style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),
@@ -159,21 +168,23 @@ class HomeScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                    const SizedBox(height: 50.0),
+                    const SizedBox(height: 20.0),
                     ElevatedButton(
                       onPressed: () {
-                        // Add your next button functionality
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Homepage()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
                         backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
-                          side: const BorderSide(
-                              color: Colors.green), // Border color
                         ),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 50.0), // Adjust padding as needed
+                          horizontal: 50.0,
+                          vertical: 12.0,
+                        ),
                       ),
                       child: const Text('Next'),
                     ),
