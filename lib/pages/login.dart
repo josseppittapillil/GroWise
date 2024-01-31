@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:growwise/pages/register.dart';
-import 'package:growwise/pages/home.dart'; // Import your home page
-
-class UserCredentials {
-  String username;
-  String email;
-  String password;
-
-  UserCredentials({
-    required this.username,
-    required this.email,
-    required this.password,
-  });
-}
+import 'package:credentials_manager/credentials_manager.dart';
+import 'package:growise/pages/register.dart';
+import 'package:growise/pages/home.dart'; // Import your home page
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -85,19 +74,34 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
-        // Retrieve user credentials list from SharedPreferences
-        final prefs = await SharedPreferences.getInstance();
-        final List<String> userCredentialsList =
-            prefs.getStringList('userCredentialsList') ?? [];
+        // Retrieve user credentials from credentials_manager
+        final credentialsManager = CredentialsManager(
+          storageKey: 'storage_key',
+          useAndroidEncryptedSharedPreferences: true,
+        );
+
+        final savedCredentials = await credentialsManager.getSavedCredentials();
 
         // Check if entered email and password match any stored credentials
-        final enteredCredentials =
-            '${_emailController.text},${_passwordController.text}';
-        if (userCredentialsList.contains(enteredCredentials)) {
+        final enteredEmail = _emailController.text;
+        final enteredPassword = _passwordController.text;
+
+        bool isCredentialsMatch = false;
+
+        for (final credential in savedCredentials) {
+          if (credential.loginOrEmail == enteredEmail &&
+              credential.password == enteredPassword) {
+            isCredentialsMatch = true;
+            break;
+          }
+        }
+
+        if (isCredentialsMatch) {
           // Show success message
           _showSuccessDialog('Success', 'Login Successful');
 
           // Redirect to the home page
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -133,7 +137,12 @@ class _LoginPageState extends State<LoginPage> {
       style: TextButton.styleFrom(
         foregroundColor: const Color(0xff02841e), // Green color
       ),
-      child: const Text('Register Now'),
+      child: const Text(
+        'New User? Register Now . . .',
+        style: TextStyle(
+          fontSize: 20.0, // Adjust the font size as needed
+        ),
+      ),
     );
   }
 
