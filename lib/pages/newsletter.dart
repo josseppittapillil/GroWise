@@ -3,161 +3,114 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class NewsletterWidget extends StatefulWidget {
-  const NewsletterWidget({super.key});
+  const NewsletterWidget({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _NewsletterWidgetState createState() => _NewsletterWidgetState();
 }
 
 class _NewsletterWidgetState extends State<NewsletterWidget> {
-  final String apiKey =
-      '1059356af5b54cb4b02a2ace19bb8bc5'; // Replace with your News API key
-  List<NewsArticle> newsList = [];
+  late Future<List<Article>> _articles;
 
   @override
   void initState() {
     super.initState();
-    fetchNews();
+    _articles = _fetchNews();
   }
 
-  Future<void> fetchNews() async {
-    final response = await http.get(
-      Uri.parse(
-          'https://newsapi.org/v2/top-headlines?country=in&category=business&q=agriculture&apiKey=$apiKey'),
-    );
+  Future<List<Article>> _fetchNews() async {
+    const apiKey =
+        '1059356af5b54cb4b02a2ace19bb8bc5'; // Replace with your News API key
+    const url =
+        'https://newsapi.org/v2/top-headlines?country=in&apiKey=$apiKey';
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      final List<dynamic> articles = data['articles'];
-      setState(() {
-        newsList =
-            articles.map((article) => NewsArticle.fromJson(article)).toList();
-      });
-    } else {
-      throw Exception('Failed to load news');
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final articles = data['articles'] as List<dynamic>;
+
+        return articles.map((article) => Article.fromJson(article)).toList();
+      } else {
+        throw Exception(
+            'Failed to load news. Status Code: ${response.statusCode}');
+      }
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error: $e');
+      // ignore: use_rethrow_when_possible
+      throw e; // Rethrow the exception to be caught by the UI
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      height: 423,
-      margin: const EdgeInsets.only(bottom: 5),
+      height: 420.0,
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: const Color(0xff02841e),
-        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: const Color(0xff02841e), width: 2.0),
+        borderRadius: BorderRadius.circular(12.0),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Positioned(
-              left: 18,
-              top: 40,
-              child: Align(
-                child: SizedBox(
-                  width: 97,
-                  height: 24,
-                  child: Text(
-                    'Newsletter',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      height: 1.2,
-                      color: Color(0xffffffff),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 375,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    // News View Option
-                    SizedBox(
-                      width: double.infinity,
-                      height: 24,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              // Handle news view option
-                            },
-                            child: const Text(
-                              'View News',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                height: 1.2,
-                              ),
-                            ),
-                          ),
-                        ],
+      child: FutureBuilder<List<Article>>(
+        future: _articles,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No news available.'));
+          } else {
+            return ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                final article = snapshot.data![index];
+                return Card(
+                  elevation: 3.0,
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: ListTile(
+                    title: Text(
+                      article.title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    // News Articles
-                    for (var article in newsList) NewsCard(article: article),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class NewsArticle {
-  final String title;
-  final String description;
-  final String url;
-  final String imageUrl;
-
-  NewsArticle({
-    required this.title,
-    required this.description,
-    required this.url,
-    required this.imageUrl,
-  });
-
-  factory NewsArticle.fromJson(Map<String, dynamic> json) {
-    return NewsArticle(
-      title: json['title'] ?? '',
-      description: json['description'] ?? '',
-      url: json['url'] ?? '',
-      imageUrl: json['urlToImage'] ?? '',
-    );
-  }
-}
-
-class NewsCard extends StatelessWidget {
-  final NewsArticle article;
-
-  const NewsCard({super.key, required this.article});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: ListTile(
-        title: Text(
-          article.title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        subtitle: Text(article.description),
-        onTap: () {
-          // Handle news item tap (open the article URL, for example)
+                    subtitle: Text(article.description),
+                  ),
+                );
+              },
+            );
+          }
         },
       ),
+    );
+  }
+}
+
+class Article {
+  final String title;
+  final String description;
+
+  Article({required this.title, required this.description});
+
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article(
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
     );
   }
 }
