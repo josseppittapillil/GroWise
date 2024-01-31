@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:growwise/pages/login.dart';
+import 'package:credentials_manager/credentials_manager.dart';
+import 'package:growise/pages/login.dart';
 
 class UserCredentials {
   String username;
@@ -18,6 +18,7 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _RegisterPageState createState() => _RegisterPageState();
 }
 
@@ -38,7 +39,9 @@ class _RegisterPageState extends State<RegisterPage> {
             children: [
               const SizedBox(height: 30),
               _buildBackButton(context),
-              const SizedBox(height: 100.0),
+              const SizedBox(height: 50.0),
+              _buildHeader(),
+              const SizedBox(height: 50.0),
               _buildTextField('Username', _usernameController),
               const SizedBox(height: 16.0),
               _buildTextField('Email', _emailController),
@@ -72,6 +75,28 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  Widget _buildHeader() {
+    return const Column(
+      children: [
+        Text(
+          'Create an Account',
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 8.0),
+        Text(
+          'Sign up to get started!',
+          style: TextStyle(
+            fontSize: 16.0,
+            color: Colors.grey,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildTextField(String labelText, TextEditingController controller,
       {bool obscureText = false}) {
     return Container(
@@ -102,6 +127,14 @@ class _RegisterPageState extends State<RegisterPage> {
           return;
         }
 
+        // Check if all fields are filled
+        if (_usernameController.text.isEmpty ||
+            _emailController.text.isEmpty ||
+            _passwordController.text.isEmpty) {
+          _showErrorDialog('Error', 'All fields are required');
+          return;
+        }
+
         // Store user credentials
         final userCredentials = UserCredentials(
           username: _usernameController.text,
@@ -109,19 +142,22 @@ class _RegisterPageState extends State<RegisterPage> {
           password: _passwordController.text,
         );
 
+        // Wait for user credentials to be saved
         await saveUserCredentials(userCredentials);
 
         // Show success message
         _showSuccessDialog('Success', 'Registered Successfully');
 
+        // Navigate to the login page
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginPage()),
         );
       },
       style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: const Color(0xff02841e), // Text color
+        backgroundColor:
+            const Color.fromARGB(255, 6, 199, 48), // Background color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
@@ -134,19 +170,18 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> saveUserCredentials(UserCredentials credentials) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    // Retrieve existing user credentials list
-    final List<String> userCredentialsList =
-        prefs.getStringList('userCredentialsList') ?? [];
-
-    // Add the new user credentials to the list
-    userCredentialsList.add(
-      '${credentials.username},${credentials.email},${credentials.password}',
+    final credentialsManager = CredentialsManager(
+      storageKey: 'storage_key',
+      useAndroidEncryptedSharedPreferences: true,
     );
 
-    // Save the updated list to SharedPreferences
-    prefs.setStringList('userCredentialsList', userCredentialsList);
+    final credentialModel = CredentialModel(
+      id: credentials.email,
+      loginOrEmail: credentials.email,
+      password: credentials.password,
+    );
+
+    await credentialsManager.saveCredential(credentialModel);
   }
 
   void _showErrorDialog(String title, String content) {
