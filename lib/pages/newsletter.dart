@@ -81,7 +81,8 @@ class _NewsletterWidgetState extends State<NewsletterWidget> {
                 final article = snapshot.data![index];
                 return Card(
                   elevation: 3.0,
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 1.0),
                   child: ListTile(
                     title: Text(
                       article.title,
