@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:growise/pages/newsletter.dart';
-import 'package:growise/pages/home.dart';
-import 'package:growise/pages/aibot.dart';
+import 'package:growwise/pages/newsletter.dart';
+import 'package:growwise/pages/home.dart';
+import 'package:growwise/pages/aibot.dart';
+import 'package:growwise/pages/shop.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -36,7 +37,11 @@ class Homepage extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.shopping_cart),
                     onPressed: () {
-                      // Handle shopping cart button press
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ShoppingCartPage()),
+                      );
                     },
                   ),
                 ],
@@ -110,7 +115,7 @@ class Homepage extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15 * fem),
                 image: const DecorationImage(
-                  image: AssetImage('lib/assets/ai.jpg'),
+                  image: AssetImage('assets/images/ai.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -159,8 +164,8 @@ class Homepage extends StatelessWidget {
 
             // Newsletter Section
             Container(
-              margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 0 * fem, 17 * fem),
-              padding: EdgeInsets.all(10 * fem),
+              margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 0 * fem, 0 * fem),
+              padding: EdgeInsets.all(5 * fem),
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15 * fem),
