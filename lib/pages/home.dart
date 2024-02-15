@@ -1,8 +1,6 @@
-//import 'dart:html';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:growwise/pages/homepage.dart';
-//import 'package:growise/pages/location.dart';
 
 class ImageItem {
   final String imagePath;
@@ -53,16 +51,15 @@ class HomeScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                'assets/images/94a643592025df851fc501ba363fdc41.jpeg'),
-            fit: BoxFit.fill,
+            image: AssetImage('assets/images/wall.jpg'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Stack(
           children: [
             Positioned.fill(
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
                 child: Container(
                   color: Colors.transparent,
                 ),
@@ -86,31 +83,42 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
-                  color:
-                      const Color.fromARGB(0, 255, 255, 255).withOpacity(0.8),
+                  color: const Color.fromARGB(255, 255, 255, 255),
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: Column(
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.search,
-                            color: Color.fromARGB(255, 0, 204, 31)),
-                        const SizedBox(width: 5.0),
                         Expanded(
-                          child: TextField(
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              hintText: 'Search...',
-                              hintStyle: TextStyle(
-                                  color: Colors.white.withOpacity(0.7)),
-                              border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(25.0)),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Colors.green,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(100.0),
+                              border: Border.all(color: Colors.green),
+                            ),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.search,
+                                    color:
+                                        const Color.fromARGB(255, 0, 204, 31),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: TextField(
+                                    style: TextStyle(color: Colors.black),
+                                    decoration: InputDecoration(
+                                      hintText: 'Search...',
+                                      hintStyle: TextStyle(color: Colors.black),
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.zero,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -134,7 +142,7 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 10.0),
                     Container(
                       height: 300,
-                      color: const Color.fromARGB(7, 255, 255, 255),
+                      color: const Color.fromARGB(2, 255, 255, 255),
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         physics: const BouncingScrollPhysics(),
@@ -143,24 +151,34 @@ class HomeScreen extends StatelessWidget {
                           return Card(
                             elevation: 5.0,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            child: Column(
+                            child: Stack(
                               children: [
                                 ClipRRect(
                                   child: Image.asset(
                                     yourImageList[index].imagePath,
-                                    width: 180,
-                                    height: 230,
-                                    fit: BoxFit.fill,
+                                    width: 200,
+                                    height: 300,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                                const SizedBox(height: 30),
-                                Text(
-                                  yourImageList[index].imageName,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                Positioned(
+                                  bottom: 10,
+                                  left: 10,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    color: Colors.black.withOpacity(
+                                        0.5), // Adjust opacity and color as needed
+                                    child: Text(
+                                      yourImageList[index].imageName,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white, // Text color
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -182,7 +200,8 @@ class HomeScreen extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Homepage()),
+                              builder: (context) => const Homepage(),
+                            ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
