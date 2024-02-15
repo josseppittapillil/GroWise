@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:growwise/pages/prompts.dart';
 
 class AiBotScreen extends StatefulWidget {
   const AiBotScreen({Key? key}) : super(key: key);
@@ -12,25 +13,6 @@ class AiBotScreen extends StatefulWidget {
 class _AiBotScreenState extends State<AiBotScreen> {
   final TextEditingController _messageController = TextEditingController();
   final List<ChatMessage> _messages = [];
-  final List<String> agricultureKeywords = [
-    "agriculture",
-    "farming",
-    "plant",
-    "plants",
-    "crops",
-    "crop",
-    "tools",
-    "tool",
-    "agronomy",
-    "horticulture",
-    "agritech",
-    "botany",
-    "soil",
-    "harvest",
-    "irrigation",
-    "gardening"
-    // Add more agriculture-related keywords here
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -126,16 +108,7 @@ class _AiBotScreenState extends State<AiBotScreen> {
   }
 
   bool _isGreeting(String message) {
-    List<String> greetings = [
-      "hi",
-      "hello",
-      "hey",
-      "good morning",
-      "good afternoon",
-      "good evening"
-    ];
-
-    for (String greeting in greetings) {
+    for (String greeting in Constants.greetings) {
       if (message.trim().toLowerCase() == greeting) {
         return true;
       }
@@ -144,7 +117,7 @@ class _AiBotScreenState extends State<AiBotScreen> {
   }
 
   bool _isAgricultureQuery(String message) {
-    for (String keyword in agricultureKeywords) {
+    for (String keyword in Constants.agricultureKeywords) {
       if (message.toLowerCase().contains(keyword)) {
         return true;
       }
@@ -163,7 +136,7 @@ class _AiBotScreenState extends State<AiBotScreen> {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          'Bearer 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',
+          'Bearer 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',
     };
     Map<String, dynamic> body = {
       'model': 'gpt-3.5-turbo-instruct', // DialoGPT model
@@ -201,19 +174,31 @@ class ChatMessage extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
       padding: const EdgeInsets.all(8.0),
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Material(
-        borderRadius: BorderRadius.circular(15.0),
-        color: isUser ? Colors.blue : const Color.fromARGB(255, 61, 179, 35),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            text,
-            style: TextStyle(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 10,
+            height: 10,
+            margin: const EdgeInsets.only(top: 8, right: 8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color:
+                  isUser ? Colors.blue : const Color.fromARGB(255, 61, 179, 35),
+            ),
+          ),
+          Flexible(
+            child: Text(
+              text,
+              style: TextStyle(
                 color: isUser
                     ? const Color.fromARGB(255, 251, 251, 251)
-                    : const Color.fromARGB(255, 255, 255, 255)),
+                    : const Color.fromARGB(255, 255, 255, 255),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
