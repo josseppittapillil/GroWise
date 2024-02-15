@@ -6,13 +6,31 @@ class AiBotScreen extends StatefulWidget {
   const AiBotScreen({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _AiBotScreenState createState() => _AiBotScreenState();
 }
 
 class _AiBotScreenState extends State<AiBotScreen> {
   final TextEditingController _messageController = TextEditingController();
   final List<ChatMessage> _messages = [];
+  final List<String> agricultureKeywords = [
+    "agriculture",
+    "farming",
+    "plant",
+    "plants",
+    "crops",
+    "crop",
+    "tools",
+    "tool",
+    "agronomy",
+    "horticulture",
+    "agritech",
+    "botany",
+    "soil",
+    "harvest",
+    "irrigation",
+    "gardening"
+    // Add more agriculture-related keywords here
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -92,13 +110,52 @@ class _AiBotScreenState extends State<AiBotScreen> {
         _messageController.clear();
       });
 
-      // Call DialoGPT API to get the AI response
-      String aiResponse = await getAIResponse(message);
-
-      setState(() {
-        _messages.insert(0, ChatMessage(text: aiResponse, isUser: false));
-      });
+      if (_isGreeting(message)) {
+        String response =
+            "Hello, I am your personal agricultural assistant. How may I assist you today?";
+        _addResponse(response);
+      } else if (_isAgricultureQuery(message)) {
+        String aiResponse = await getAIResponse(message);
+        _addResponse(aiResponse);
+      } else {
+        String response =
+            "This Assistant is Fine-Tuned for your Agricultural Queries and does not have Knowledge beyond the topic.";
+        _addResponse(response);
+      }
     }
+  }
+
+  bool _isGreeting(String message) {
+    List<String> greetings = [
+      "hi",
+      "hello",
+      "hey",
+      "good morning",
+      "good afternoon",
+      "good evening"
+    ];
+
+    for (String greeting in greetings) {
+      if (message.trim().toLowerCase() == greeting) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool _isAgricultureQuery(String message) {
+    for (String keyword in agricultureKeywords) {
+      if (message.toLowerCase().contains(keyword)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void _addResponse(String text) {
+    setState(() {
+      _messages.insert(0, ChatMessage(text: text, isUser: false));
+    });
   }
 
   Future<String> getAIResponse(String message) async {
@@ -106,7 +163,7 @@ class _AiBotScreenState extends State<AiBotScreen> {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          'Bearer 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',
+          'Bearer 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',
     };
     Map<String, dynamic> body = {
       'model': 'gpt-3.5-turbo-instruct', // DialoGPT model
@@ -141,17 +198,20 @@ class ChatMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
       padding: const EdgeInsets.all(8.0),
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Material(
-        borderRadius: BorderRadius.circular(8.0),
-        color: isUser ? Colors.blue : Colors.white,
+        borderRadius: BorderRadius.circular(15.0),
+        color: isUser ? Colors.blue : const Color.fromARGB(255, 61, 179, 35),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
             text,
-            style: TextStyle(color: isUser ? Colors.white : Colors.black),
+            style: TextStyle(
+                color: isUser
+                    ? const Color.fromARGB(255, 251, 251, 251)
+                    : const Color.fromARGB(255, 255, 255, 255)),
           ),
         ),
       ),
