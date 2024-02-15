@@ -1,7 +1,7 @@
 //import 'dart:html';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:growise/pages/homepage.dart';
+import 'package:growwise/pages/homepage.dart';
 //import 'package:growise/pages/location.dart';
 
 class ImageItem {
@@ -15,31 +15,31 @@ class HomeScreen extends StatelessWidget {
   // Example list of ImageItem
   static List<ImageItem> yourImageList = [
     ImageItem(
-      imagePath: 'lib/assets/cardamom.jpg',
+      imagePath: 'assets/images/cardamom.jpg',
       imageName: 'Cardamom',
     ),
     ImageItem(
-      imagePath: 'lib/assets/carrots.jpg',
+      imagePath: 'assets/images/carrots.jpg',
       imageName: 'Carrots',
     ),
     ImageItem(
-      imagePath: 'lib/assets/coffee.jpg',
+      imagePath: 'assets/images/coffee.jpg',
       imageName: 'Coffee',
     ),
     ImageItem(
-      imagePath: 'lib/assets/cucumbers.jpg',
+      imagePath: 'assets/images/cucumbers.jpg',
       imageName: 'Cucumber',
     ),
     ImageItem(
-      imagePath: 'lib/assets/nutmeg.jpg',
+      imagePath: 'assets/images/nutmeg.jpg',
       imageName: 'Nutmeg',
     ),
     ImageItem(
-      imagePath: 'lib/assets/pepper.jpg',
+      imagePath: 'assets/images/pepper.jpg',
       imageName: 'Pepper',
     ),
     ImageItem(
-      imagePath: 'lib/assets/tea leaves.jpg',
+      imagePath: 'assets/images/tea leaves.jpg',
       imageName: 'Tea Leaves',
     ),
     // Add more items as needed
@@ -53,9 +53,9 @@ class HomeScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image:
-                AssetImage('lib/assets/94a643592025df851fc501ba363fdc41.jpeg'),
-            fit: BoxFit.cover,
+            image: AssetImage(
+                'assets/images/94a643592025df851fc501ba363fdc41.jpeg'),
+            fit: BoxFit.fill,
           ),
         ),
         child: Stack(
@@ -86,7 +86,8 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.8),
+                  color:
+                      const Color.fromARGB(0, 255, 255, 255).withOpacity(0.8),
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: Column(
@@ -105,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                                   color: Colors.white.withOpacity(0.7)),
                               border: const OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(50.0)),
+                                    BorderRadius.all(Radius.circular(25.0)),
                                 borderSide: BorderSide.none,
                               ),
                               filled: true,
@@ -118,24 +119,25 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 50.0),
                     Container(
                       width: double.infinity,
-                      color: Colors.green,
+                      color: const Color.fromARGB(21, 253, 253, 253),
                       padding: const EdgeInsets.all(10.0),
                       child: const Text(
                         'CHOOSE YOUR CROP',
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Color.fromARGB(255, 0, 0, 0),
                         ),
                       ),
                     ),
                     const SizedBox(height: 10.0),
                     Container(
                       height: 300,
-                      color: Colors.white,
+                      color: const Color.fromARGB(7, 255, 255, 255),
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
                         itemCount: yourImageList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Card(
@@ -146,12 +148,11 @@ class HomeScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(-1.0),
                                   child: Image.asset(
                                     yourImageList[index].imagePath,
                                     width: 180,
-                                    height: 220,
-                                    fit: BoxFit.cover,
+                                    height: 230,
+                                    fit: BoxFit.fill,
                                   ),
                                 ),
                                 const SizedBox(height: 30),
@@ -169,24 +170,41 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Homepage()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 50.0,
-                          vertical: 12.0,
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.0),
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 26, 156, 3),
                         ),
                       ),
-                      child: const Text('Next'),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Homepage()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              const Color.fromARGB(255, 26, 156, 3),
+                          backgroundColor:
+                              const Color.fromARGB(255, 251, 251, 251),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 150.0,
+                            vertical: 17.0,
+                          ),
+                        ),
+                        child: const Text(
+                          'NEXT',
+                          style: TextStyle(
+                            fontSize: 11.5,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
