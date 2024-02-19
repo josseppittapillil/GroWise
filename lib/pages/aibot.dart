@@ -136,7 +136,7 @@ class _AiBotScreenState extends State<AiBotScreen> {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          'Bearer sk-xxxxxxxxxxxx',
+          'Bearer *********',
     };
     Map<String, dynamic> body = {
       'model': 'gpt-3.5-turbo-instruct', // DialoGPT model
