@@ -10,7 +10,6 @@ class ImageItem {
 }
 
 class HomeScreen extends StatelessWidget {
-  // Example list of ImageItem
   static List<ImageItem> yourImageList = [
     ImageItem(
       imagePath: 'assets/images/cardamom.jpg',
@@ -40,7 +39,6 @@ class HomeScreen extends StatelessWidget {
       imagePath: 'assets/images/tea leaves.jpg',
       imageName: 'Tea Leaves',
     ),
-    // Add more items as needed
   ];
 
   const HomeScreen({Key? key}) : super(key: key);
@@ -97,14 +95,14 @@ class HomeScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(100.0),
                               border: Border.all(color: Colors.green),
                             ),
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: EdgeInsets.all(8.0),
                                   child: Icon(
                                     Icons.search,
                                     color:
-                                        const Color.fromARGB(255, 0, 204, 31),
+                                        Color.fromARGB(255, 0, 204, 31),
                                   ),
                                 ),
                                 Expanded(
