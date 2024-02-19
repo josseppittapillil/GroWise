@@ -12,8 +12,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'GroWise',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        fontFamily: 'Urbanist',
+        useMaterial3: true,
       ),
       home: const SplashScreen(),
     );
@@ -24,7 +26,6 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
