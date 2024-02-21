@@ -329,7 +329,7 @@ class Market extends StatelessWidget {
                                       margin: EdgeInsets.fromLTRB(
                                           0 * fem, 0 * fem, 3 * fem, 0 * fem),
                                       child: Text(
-                                        'Fungicide',
+                                        'Fertilisers',
                                         style: TextStyle(
                                           fontFamily: 'Urbanist',
                                           fontSize: 20 * ffem,
