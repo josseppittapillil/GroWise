@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:growwise/pages/home.dart';
-import 'package:growwise/pages/homepage.dart';
+//import 'package:growise/pages/home.dart';
+import 'package:growise/pages/homepage.dart';
+import 'package:growise/pages/products.dart';
 
 class Market extends StatelessWidget {
   const Market({Key? key});
@@ -10,6 +11,7 @@ class Market extends StatelessWidget {
     double baseWidth = 375;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
+    String selectedCategory = ''; // Initialize selected category variable
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xff02831d),
@@ -100,7 +102,7 @@ class Market extends StatelessWidget {
                     ),
                     Container(
                       margin: EdgeInsets.fromLTRB(
-                          45 * fem, 1.29 * fem, 0 * fem, 0 * fem),
+                          50 * fem, 1.29 * fem, 0 * fem, 0 * fem),
                       child: Text(
                         'Marketplace',
                         style: TextStyle(
@@ -144,17 +146,20 @@ class Market extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacement(
+                              selectedCategory =
+                                  'Tools'; // Update selected category
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()),
+                                    builder: (context) =>
+                                        Products(category: selectedCategory)),
                               );
                             },
                             child: AnimatedContainer(
                               duration: const Duration(
                                   milliseconds: 300), // Set animation duration
-                              margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem,
-                                  24.6 * fem, 0 * fem), // Adjusted margin
+                              margin: EdgeInsets.fromLTRB(
+                                  0 * fem, 0 * fem, 24.6 * fem, 0 * fem),
                               padding: EdgeInsets.fromLTRB(
                                   6 * fem, 4 * fem, 5 * fem, 4 * fem),
                               width: 129.4 * fem, // Adjusted width
@@ -211,7 +216,14 @@ class Market extends StatelessWidget {
                           SizedBox(width: 5 * fem), // Add SizedBox for spacing
                           GestureDetector(
                             onTap: () {
-                              // Navigate to Seeds page
+                              selectedCategory =
+                                  'Seeds'; // Update selected category
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Products(category: selectedCategory)),
+                              );
                             },
                             child: AnimatedContainer(
                               duration: const Duration(
@@ -269,7 +281,6 @@ class Market extends StatelessWidget {
                               ),
                             ),
                           ),
-                          // Add GestureDetector for other categories
                         ],
                       ),
                     ),
@@ -284,13 +295,20 @@ class Market extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              // Navigate to Tools page
+                              selectedCategory =
+                                  'Fertilisers'; // Update selected category
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Products(category: selectedCategory)),
+                              );
                             },
                             child: AnimatedContainer(
                               duration: const Duration(
                                   milliseconds: 300), // Set animation duration
-                              margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem,
-                                  24.6 * fem, 0 * fem), // Adjusted margin
+                              margin: EdgeInsets.fromLTRB(
+                                  0 * fem, 0 * fem, 24.6 * fem, 0 * fem),
                               padding: EdgeInsets.fromLTRB(
                                   6 * fem, 4 * fem, 5 * fem, 4 * fem),
                               width: 129.4 * fem, // Adjusted width
@@ -320,7 +338,7 @@ class Market extends StatelessWidget {
                                         borderRadius:
                                             BorderRadius.circular(20 * fem),
                                         child: Image.asset(
-                                          'assets/images/rectangle-190-ePR.png',
+                                          'assets/images/fertilize.png',
                                           fit: BoxFit.contain,
                                         ),
                                       ),
@@ -347,7 +365,14 @@ class Market extends StatelessWidget {
                           SizedBox(width: 5 * fem), // Add SizedBox for spacing
                           GestureDetector(
                             onTap: () {
-                              // Navigate to Seeds page
+                              selectedCategory =
+                                  'Crop Protection'; // Update selected category
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Products(category: selectedCategory)),
+                              );
                             },
                             child: AnimatedContainer(
                               duration: const Duration(
@@ -375,8 +400,8 @@ class Market extends StatelessWidget {
                                     Container(
                                       margin: EdgeInsets.fromLTRB(
                                           0 * fem, 0 * fem, 1 * fem, 5 * fem),
-                                      width: 123 * fem,
-                                      height: 123 * fem,
+                                      width: 120 * fem,
+                                      height: 120 * fem,
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20 * fem),
@@ -405,7 +430,6 @@ class Market extends StatelessWidget {
                               ),
                             ),
                           ),
-                          // Add GestureDetector for other categories
                         ],
                       ),
                     ),
@@ -420,13 +444,20 @@ class Market extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              // Navigate to Tools page
+                              selectedCategory =
+                                  'Irrigation Products'; // Update selected category
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Products(category: selectedCategory)),
+                              );
                             },
                             child: AnimatedContainer(
                               duration: const Duration(
                                   milliseconds: 300), // Set animation duration
-                              margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem,
-                                  24.6 * fem, 0 * fem), // Adjusted margin
+                              margin: EdgeInsets.fromLTRB(
+                                  0 * fem, 0 * fem, 24.6 * fem, 0 * fem),
                               padding: EdgeInsets.fromLTRB(
                                   6 * fem, 4 * fem, 5 * fem, 4 * fem),
                               width: 129.4 * fem, // Adjusted width
@@ -483,7 +514,14 @@ class Market extends StatelessWidget {
                           SizedBox(width: 5 * fem), // Add SizedBox for spacing
                           GestureDetector(
                             onTap: () {
-                              // Navigate to Seeds page
+                              selectedCategory =
+                                  'Pesticide'; // Update selected category
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Products(category: selectedCategory)),
+                              );
                             },
                             child: AnimatedContainer(
                               duration: const Duration(
