@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:growwise/pages/newsletter.dart';
 import 'package:growwise/pages/home.dart';
 import 'package:growwise/pages/aibot.dart';
-import 'package:growwise/pages/shop.dart';
+import 'package:growwise/pages/market.dart';
+import 'package:growwise/pages/login.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -17,38 +18,12 @@ class Homepage extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(20 * fem, 30 * fem, 19 * fem, 66 * fem),
         width: double.infinity,
         decoration: const BoxDecoration(
-          color: Color(0xffffffff),
+          color: Color.fromARGB(20, 254, 255, 255),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Top Section with Settings and Shopping Cart
-            Container(
-              margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 0 * fem, 28 * fem),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.settings),
-                    onPressed: () {
-                      // Handle settings button press
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.shopping_cart),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ShoppingCartPage()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-
-            // Header Section
+            const SizedBox(height: 41),
             Container(
               margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 0 * fem, 28 * fem),
               width: 147 * fem,
@@ -92,7 +67,7 @@ class Homepage extends StatelessWidget {
                             'Change Crop',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 20 * ffem,
+                              fontSize: 19 * ffem,
                               fontWeight: FontWeight.w600,
                               height: 1.2 * ffem / fem,
                               color: const Color(0xff02841e),
@@ -161,6 +136,7 @@ class Homepage extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 25),
 
             // Newsletter Section
             Container(
@@ -169,7 +145,7 @@ class Homepage extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15 * fem),
-                color: const Color(0xfff7f8f9),
+                color: const Color.fromARGB(30, 21, 200, 12),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,6 +163,38 @@ class Homepage extends StatelessWidget {
                   const NewsletterWidget(), // Use your NewsletterWidget here
                 ],
               ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Color.fromARGB(181, 40, 210, 6),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () {
+                // Handle settings button press
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Market()),
+                );
+              },
             ),
           ],
         ),
