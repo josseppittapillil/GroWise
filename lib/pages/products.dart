@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:growwise/pages/iteminfo.dart';
 
 class Products extends StatelessWidget {
   final String category;
+  final List<Item> items;
 
-  const Products({Key? key, required this.category}) : super(key: key);
+  const Products({Key? key, required this.category, required this.items})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double baseWidth = 375;
     double fem = MediaQuery.of(context).size.width / baseWidth;
-    double ffem = fem * 0.97;
+    double ffem = fem * 0.97; // Adjusted font factor
 
     return Scaffold(
       appBar: PreferredSize(
@@ -37,7 +40,7 @@ class Products extends StatelessWidget {
               width: 35 * fem,
               height: 35 * fem,
               child: Image.asset(
-                'assets/images/back.png',
+                'assets/images/back1.png',
                 width: 35 * fem,
                 height: 35 * fem,
               ),
@@ -45,37 +48,70 @@ class Products extends StatelessWidget {
           ),
         ),
       ),
-      body: ProductsList(category: category),
+      body: ProductsList(
+        items: items,
+        fem: fem,
+        ffem: ffem,
+      ), // Pass fem and ffem to ProductsList
     );
   }
 }
 
 class ProductsList extends StatelessWidget {
-  final String category;
+  final List<Item> items;
+  final double fem; // Add fem variable
+  final double ffem; // Add ffem variable
 
-  const ProductsList({Key? key, required this.category}) : super(key: key);
+  const ProductsList(
+      {Key? key, required this.items, required this.fem, required this.ffem})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Logic to fetch products based on the selected category
-    // You can implement this logic as per your requirements
-    List<String> products = fetchProductsForCategory(category);
-
     return ListView.builder(
-      itemCount: products.length,
+      itemCount: items.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(products[index]),
-          // Add more details or customization as needed for each product
+        return Container(
+          margin: EdgeInsets.all(16 * fem),
+          padding: EdgeInsets.all(16 * fem),
+          decoration: BoxDecoration(
+            color: Colors.grey[200], // Grey background color
+            borderRadius:
+                BorderRadius.circular(20 * fem), // Adjusted border radius
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                items[index].imageAsset,
+                width: double.infinity,
+                height: 150 * fem, // Adjusted height
+                fit: BoxFit.cover,
+              ),
+              SizedBox(height: 10 * fem), // Add some spacing
+              Text(
+                items[index].info,
+                style: TextStyle(
+                  fontFamily: 'Urbanist',
+                  fontSize: 18 * ffem,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xff000000),
+                ),
+              ),
+              SizedBox(height: 5 * fem), // Add some spacing
+              Text(
+                items[index].price,
+                style: TextStyle(
+                  fontFamily: 'Urbanist',
+                  fontSize: 16 * ffem,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xff000000),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
-  }
-
-  // Dummy function, replace it with your actual logic to fetch products
-  List<String> fetchProductsForCategory(String category) {
-    // Implement your logic here to fetch products based on the category
-    // For demonstration, returning dummy data
-    return ['Product 1', 'Product 2', 'Product 3'];
   }
 }
