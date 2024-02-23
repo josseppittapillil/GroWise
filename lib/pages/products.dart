@@ -108,6 +108,34 @@ class ProductsList extends StatelessWidget {
                   color: const Color(0xff000000),
                 ),
               ),
+              // Add some spacing
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    // Implement Add To Cart functionality here
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 239, 238, 238),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20 * fem,
+                      vertical: 0 * fem,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10 * fem),
+                    ),
+                  ),
+                  child: Text(
+                    'Add To Cart',
+                    style: TextStyle(
+                      fontFamily: 'Urbanist',
+                      fontSize: 16 * ffem,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.green,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         );
