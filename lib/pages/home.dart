@@ -101,8 +101,7 @@ class HomeScreen extends StatelessWidget {
                                   padding: EdgeInsets.all(8.0),
                                   child: Icon(
                                     Icons.search,
-                                    color:
-                                        Color.fromARGB(255, 0, 204, 31),
+                                    color: Color.fromARGB(255, 0, 204, 31),
                                   ),
                                 ),
                                 Expanded(
@@ -197,9 +196,7 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => const Homepage(),
-                            ),
+                            MaterialPageRoute(builder: (context) => Homepage()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -218,7 +215,7 @@ class HomeScreen extends StatelessWidget {
                         child: const Text(
                           'NEXT',
                           style: TextStyle(
-                            fontSize: 11.5,
+                            fontSize: 11,
                           ),
                         ),
                       ),
