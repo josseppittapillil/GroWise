@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-//import 'package:growise/pages/home.dart';
-import 'package:growise/pages/homepage.dart';
-import 'package:growise/pages/products.dart';
+import 'package:growwise/pages/homepage.dart';
+import 'package:growwise/pages/products.dart';
+import 'iteminfo.dart';
 
 class Market extends StatelessWidget {
-  const Market({Key? key});
+  const Market({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +15,18 @@ class Market extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xff02831d),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
+        selectedFontSize: 15,
+        unselectedFontSize: 15, // Set selected label color to white
         items: [
           BottomNavigationBarItem(
             icon: IconButton(
-              onPressed: () {
-                // Navigate to page associated with this icon
-              },
+              onPressed: () {},
               icon: Image.asset('assets/images/image-3.png',
                   width: 30 * fem, height: 30 * fem),
             ),
-            label: '',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: IconButton(
@@ -34,18 +36,17 @@ class Market extends StatelessWidget {
               icon: Image.asset('assets/images/image-2.png',
                   width: 30 * fem, height: 30 * fem),
             ),
-            label: '',
+            label: 'Search',
           ),
           BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                // Navigate to page associated with this icon
-              },
-              icon: Image.asset('assets/images/shopping-cart-1-1.png',
-                  width: 30 * fem, height: 30 * fem),
-            ),
-            label: '',
-          ),
+              icon: IconButton(
+                onPressed: () {
+                  // Navigate to page associated with this icon
+                },
+                icon: Image.asset('assets/images/shopping-cart-1-1.png',
+                    width: 30 * fem, height: 30 * fem),
+              ),
+              label: 'Cart'),
         ],
       ),
       body: SizedBox(
@@ -94,7 +95,7 @@ class Market extends StatelessWidget {
                         width: 35 * fem,
                         height: 35 * fem,
                         child: Image.asset(
-                          'assets/images/back.png',
+                          'assets/images/back1.png',
                           width: 41 * fem,
                           height: 41 * fem,
                         ),
@@ -146,23 +147,26 @@ class Market extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              selectedCategory =
-                                  'Tools'; // Update selected category
+                              selectedCategory = 'Tools';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        Products(category: selectedCategory)),
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
                               );
                             },
                             child: AnimatedContainer(
-                              duration: const Duration(
-                                  milliseconds: 300), // Set animation duration
+                              duration: const Duration(milliseconds: 300),
                               margin: EdgeInsets.fromLTRB(
                                   0 * fem, 0 * fem, 24.6 * fem, 0 * fem),
                               padding: EdgeInsets.fromLTRB(
                                   6 * fem, 4 * fem, 5 * fem, 4 * fem),
-                              width: 129.4 * fem, // Adjusted width
+                              width: 129.4 * fem,
                               height: double.infinity,
                               decoration: BoxDecoration(
                                 color: const Color(0xff02841e),
@@ -213,24 +217,27 @@ class Market extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(width: 5 * fem), // Add SizedBox for spacing
+                          SizedBox(width: 5 * fem),
                           GestureDetector(
                             onTap: () {
-                              selectedCategory =
-                                  'Seeds'; // Update selected category
+                              selectedCategory = 'Seeds';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        Products(category: selectedCategory)),
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
                               );
                             },
                             child: AnimatedContainer(
-                              duration: const Duration(
-                                  milliseconds: 300), // Set animation duration
+                              duration: const Duration(milliseconds: 300),
                               padding: EdgeInsets.fromLTRB(
                                   6 * fem, 4 * fem, 5 * fem, 4 * fem),
-                              width: 129.4 * fem, // Adjusted width
+                              width: 129.4 * fem,
                               height: double.infinity,
                               decoration: BoxDecoration(
                                 color: const Color(0xff02841e),
@@ -295,23 +302,26 @@ class Market extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              selectedCategory =
-                                  'Fertilisers'; // Update selected category
+                              selectedCategory = 'Fertilisers';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        Products(category: selectedCategory)),
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
                               );
                             },
                             child: AnimatedContainer(
-                              duration: const Duration(
-                                  milliseconds: 300), // Set animation duration
+                              duration: const Duration(milliseconds: 300),
                               margin: EdgeInsets.fromLTRB(
                                   0 * fem, 0 * fem, 24.6 * fem, 0 * fem),
                               padding: EdgeInsets.fromLTRB(
                                   6 * fem, 4 * fem, 5 * fem, 4 * fem),
-                              width: 129.4 * fem, // Adjusted width
+                              width: 129.4 * fem,
                               height: double.infinity,
                               decoration: BoxDecoration(
                                 color: const Color(0xff02841e),
@@ -362,24 +372,27 @@ class Market extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(width: 5 * fem), // Add SizedBox for spacing
+                          SizedBox(width: 5 * fem),
                           GestureDetector(
                             onTap: () {
-                              selectedCategory =
-                                  'Crop Protection'; // Update selected category
+                              selectedCategory = 'Crop Protection';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        Products(category: selectedCategory)),
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
                               );
                             },
                             child: AnimatedContainer(
-                              duration: const Duration(
-                                  milliseconds: 300), // Set animation duration
+                              duration: const Duration(milliseconds: 300),
                               padding: EdgeInsets.fromLTRB(
                                   6 * fem, 4 * fem, 5 * fem, 4 * fem),
-                              width: 129.4 * fem, // Adjusted width
+                              width: 129.4 * fem,
                               height: double.infinity,
                               decoration: BoxDecoration(
                                 color: const Color(0xff02841e),
@@ -400,8 +413,8 @@ class Market extends StatelessWidget {
                                     Container(
                                       margin: EdgeInsets.fromLTRB(
                                           0 * fem, 0 * fem, 1 * fem, 5 * fem),
-                                      width: 120 * fem,
-                                      height: 120 * fem,
+                                      width: 123 * fem,
+                                      height: 123 * fem,
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20 * fem),
@@ -444,23 +457,26 @@ class Market extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              selectedCategory =
-                                  'Irrigation Products'; // Update selected category
+                              selectedCategory = 'Irrigation Products';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        Products(category: selectedCategory)),
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
                               );
                             },
                             child: AnimatedContainer(
-                              duration: const Duration(
-                                  milliseconds: 300), // Set animation duration
+                              duration: const Duration(milliseconds: 300),
                               margin: EdgeInsets.fromLTRB(
                                   0 * fem, 0 * fem, 24.6 * fem, 0 * fem),
                               padding: EdgeInsets.fromLTRB(
                                   6 * fem, 4 * fem, 5 * fem, 4 * fem),
-                              width: 129.4 * fem, // Adjusted width
+                              width: 129.4 * fem,
                               height: double.infinity,
                               decoration: BoxDecoration(
                                 color: const Color(0xff02841e),
@@ -511,24 +527,27 @@ class Market extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(width: 5 * fem), // Add SizedBox for spacing
+                          SizedBox(width: 5 * fem),
                           GestureDetector(
                             onTap: () {
-                              selectedCategory =
-                                  'Pesticide'; // Update selected category
+                              selectedCategory = 'Pesticide';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        Products(category: selectedCategory)),
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
                               );
                             },
                             child: AnimatedContainer(
-                              duration: const Duration(
-                                  milliseconds: 300), // Set animation duration
+                              duration: const Duration(milliseconds: 300),
                               padding: EdgeInsets.fromLTRB(
                                   6 * fem, 4 * fem, 5 * fem, 4 * fem),
-                              width: 129.4 * fem, // Adjusted width
+                              width: 129.4 * fem,
                               height: double.infinity,
                               decoration: BoxDecoration(
                                 color: const Color(0xff02841e),
@@ -549,8 +568,8 @@ class Market extends StatelessWidget {
                                     Container(
                                       margin: EdgeInsets.fromLTRB(
                                           0 * fem, 0 * fem, 1 * fem, 5 * fem),
-                                      width: 120 * fem,
-                                      height: 120 * fem,
+                                      width: 123 * fem,
+                                      height: 123 * fem,
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20 * fem),
@@ -582,6 +601,8 @@ class Market extends StatelessWidget {
                         ],
                       ),
                     ),
+
+                    // Add more rows similarly for other categories
                   ],
                 ),
               ),
