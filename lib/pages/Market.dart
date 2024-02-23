@@ -302,7 +302,7 @@ class Market extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              selectedCategory = 'Fertilisers';
+                              selectedCategory = 'Fertilizers';
                               List<Item> items =
                                   categorizedItems[selectedCategory]!;
                               Navigator.push(
@@ -357,7 +357,7 @@ class Market extends StatelessWidget {
                                       margin: EdgeInsets.fromLTRB(
                                           0 * fem, 0 * fem, 3 * fem, 0 * fem),
                                       child: Text(
-                                        'Fertilisers',
+                                        'Fertilizers',
                                         style: TextStyle(
                                           fontFamily: 'Urbanist',
                                           fontSize: 20 * ffem,
@@ -530,7 +530,7 @@ class Market extends StatelessWidget {
                           SizedBox(width: 5 * fem),
                           GestureDetector(
                             onTap: () {
-                              selectedCategory = 'Pesticide';
+                              selectedCategory = 'Pesticide/Fungicides';
                               List<Item> items =
                                   categorizedItems[selectedCategory]!;
                               Navigator.push(
