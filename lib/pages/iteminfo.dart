@@ -1,3 +1,4 @@
+//import 'package:growise/pages/products.dart';
 class Item {
   final String info;
   final String price;
@@ -16,61 +17,61 @@ void main() {
     'Tools': [
       Item(
         info:
-            'Jappy Agro Hand Weeder with 4 Foot Handle Manual Weeder for Agriculture Horticulture Gardening Weeds Cutting Remove Tools (7.5 Blade Size) 4 Foot Handle',
+            'Jappy Agro Hand Weeder with 4 Foot Handle Manual Weeder (7.5 Blade Size)',
         price: '₹836',
         imageAsset: 'assets/images/tool1.png',
       ),
       Item(
         info:
-            'Sharpex Heavy Duty Hand Weeder for Gardening | MS Powder Coated Body and Heat Treated 6 Inch Blade | Manual Weed Removal Hoe Equipment | Agriculture Tools for Farming (with Pole/Handle)',
+            'Sharpex Heavy Duty Hand Weeder MS Powder Coated Body and Heat Treated 6 Inch Blade)',
         price: '₹819',
         imageAsset: 'assets/images/tool2.png',
       ),
       Item(
         info:
-            ' FALCON FGHS-10 Hand Hoe Agriculture Equipment for Digging & Weeding Comfort Grip Handle Phawda Garden Tool for Home Gardening Farm Lands',
+            ' FALCON FGHS-10 Hand Hoe for Digging & Weeding Comfort Grip Handle Phawda Garden Tool',
         price: '₹204',
         imageAsset: 'assets/images/tool2.png',
       ),
       Item(
         info:
-            'YUVCON Hoe Set for Gardening (5 Piece), Long Telescopic Handle, Strong Iron Metal attachments and Lightweight Handle Made of Strong Alloy, All in one Gardening Tool Set',
+            'YUVCON Hoe Set for Gardening (5 Piece), Long Telescopic Handle and Lightweight Handle Made of Strong Alloy',
         price: '₹1,799',
         imageAsset: 'assets/images/tool2.png',
       ),
       Item(
         info:
-            'Sharpex Quick Bulb Planter Tool | Automatic Soil Release For Digging | Refilling Hole Ideal Bulb Transplanted Kit For Lawn And Garden Planting | Digging Tools for Soil (Sliver, Orange)',
+            'Sharpex Quick Bulb Planter Tool, Refilling Hole Ideal Bulb Transplanted Kit For Lawn And Garden Planting',
         price: '₹522',
         imageAsset: 'assets/images/tool2.png',
       ),
       Item(
         info:
-            'TAD SOLID® 202 Grade Stainless Steel Big Spade for Gardening or Digging Heavy Duty Agriculture Tool (8.5X11X35)',
+            'TAD SOLID® 202 Grade Stainless Steel Big Spade for Gardening ',
         price: '₹859',
         imageAsset: 'assets/images/tool2.png',
       ),
       Item(
         info:
-            'Cinagro Garden Tool Kit 3 Pieces - Garden Hoe, Garden Tiller & Garden Hand Hoe with 2 Prongs, Terrace Gardening Accessories, Gardening Tools Kit for Home Gardening, Farming Tools',
+            'Cinagro Garden Tool Kit 3 Pieces - Garden Hoe, Garden Tiller & Garden Hand Hoe with 2 Prongs',
         price: '₹₹699',
         imageAsset: 'assets/images/tool2.png',
       ),
       Item(
         info:
-            'Kraft Seeds by 10CLUB Gardening Hand Tools Set - 5 Pieces (Cultivator, Big and Small Trowel, Weeder, Fork) | Tools for Home Garden | Durable Plant Tool Kit | Farming Tools',
+            'Kraft Seeds by 10CLUB Gardening Hand Tools Set - 5 Pieces (Cultivator, Big and Small Trowel, Weeder, Fork)',
         price: '₹299',
         imageAsset: 'assets/images/tool2.png',
       ),
       Item(
         info:
-            ' HASTHIP® 5Pcs Gardening Tools for Garden Home Patio, Heavy Duty Aluminum Tools Set with Gardening Transplanting Spade, Cultivator, Pruner, Trowel and Gardening Gloves, Durable Gardening Accessories',
+            ' HASTHIP® 5Pcs Gardening Tools for Garden Home Patio, Cultivator, Pruner, Trowel and Gardening Gloves, Durable Gardening Accessories',
         price: ' ₹1,599',
         imageAsset: 'assets/images/tool2.png',
       ),
       Item(
         info:
-            'MLA TOOLS Earth Auger Digger Drill Bit 6, 4,3, inch Daimter Agriculture Horticulture Gardening Tools (4 inch Daimter 2 Spiral)',
+            'MLA TOOLS Earth Auger Digger Drill Bit 6, 4,3, inch Daimter ',
         price: '₹1,099',
         imageAsset: 'assets/images/tool2.png',
       ),
