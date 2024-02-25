@@ -1,208 +1,588 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:growwise/pages/image.dart';
+import 'package:growwise/pages/homepage.dart';
+import 'package:growwise/pages/products.dart';
+import 'iteminfo.dart';
+//import 'search.dart'; // Import the search.dart file
+//import 'cart.dart'; // Import the cart.dart file
 
-class ShoppingCartPage extends StatefulWidget {
-  const ShoppingCartPage({Key? key}) : super(key: key);
+class Market extends StatefulWidget {
+  const Market({Key? key}) : super(key: key);
 
   @override
-  _ShoppingCartPageState createState() => _ShoppingCartPageState();
+  _MarketState createState() => _MarketState();
 }
 
-class _ShoppingCartPageState extends State<ShoppingCartPage> {
-  late ScrollController _scrollController;
-  late Timer _timer;
-  double _currentScrollOffset = 2.0;
-  final double _scrollSpeed = 2.0; // Initial scroll speed
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-    _timer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
-      _scrollController.jumpTo(_currentScrollOffset);
-      _currentScrollOffset += _scrollSpeed;
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    _scrollController.dispose();
-    super.dispose();
-  }
+class _MarketState extends State<Market> {
+  int currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
+    double baseWidth = 375;
+    double fem = MediaQuery.of(context).size.width / baseWidth;
+    double ffem = fem * 0.97;
+    String selectedCategory = ''; // Initialize selected category variable
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background Image
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/wall.jpg',
-              fit: BoxFit.fill,
-            ),
+      body: SizedBox(
+        width: double.infinity,
+        child: Container(
+          padding: EdgeInsets.fromLTRB(0 * fem, 27 * fem, 0 * fem, 0 * fem),
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            color: Colors.white,
           ),
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 100),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0), // White text color
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin:
+                    EdgeInsets.fromLTRB(0 * fem, 0 * fem, 0 * fem, 22 * fem),
+                padding: EdgeInsets.fromLTRB(
+                    21 * fem, 13 * fem, 130.87 * fem, 13 * fem),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0x19ffffff)),
+                  color: const Color(0xfffffefe),
+                  borderRadius: BorderRadius.circular(2 * fem),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0x3f000000),
+                      offset: Offset(0 * fem, 4 * fem),
+                      blurRadius: 2 * fem,
                     ),
-                    decoration: InputDecoration(
-                      hintText: 'Search products...',
-                      hintStyle: const TextStyle(
-                        color: Color.fromARGB(
-                            255, 0, 0, 0), // Light grey hint color
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[100], // Light grey background
-                      border: const UnderlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(8.0),
+                  ],
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Homepage()),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(
+                            0 * fem, 0 * fem, 0 * fem, 0 * fem),
+                        width: 35 * fem,
+                        height: 35 * fem,
+                        child: Image.asset(
+                          'assets/images/back1.png',
+                          width: 41 * fem,
+                          height: 41 * fem,
                         ),
                       ),
                     ),
-                    onChanged: (text) {
-                      // Implement your search functionality here
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 150, // Adjust the height as needed
-                  child: Container(
-                    color: const Color.fromARGB(112, 238, 238, 238),
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: images.length * 1000,
-                      itemBuilder: (context, index) {
-                        final int imageIndex = index % images.length;
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.asset(
-                            images[imageIndex],
-                            width: 200,
-                            height: 300,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Featured Categories',
-                    style: TextStyle(
-                      backgroundColor: Color.fromARGB(73, 0, 0, 0),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(
-                          255, 255, 254, 254), // White text color
-                    ),
-                  ),
-                ),
-                GridView.count(
-                  crossAxisCount: 4,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    for (int i = 0; i < images.length; i++)
-                      CategoryWidget(
-                        category: categories[i],
-                        image: images[i],
+                    Container(
+                      margin: EdgeInsets.fromLTRB(
+                          50 * fem, 1.29 * fem, 0 * fem, 0 * fem),
+                      child: Text(
+                        'Marketplace',
+                        style: TextStyle(
+                          fontFamily: 'Urbanist',
+                          fontSize: 18 * ffem,
+                          fontWeight: FontWeight.w600,
+                          height: 0.5335389137 * ffem / fem,
+                          color: const Color(0xff02841e),
+                        ),
                       ),
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        color: Colors.grey[200], // Grey background color
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.home),
-              onPressed: () {
-                // Navigate to home screen
-              },
-            ),
-            SizedBox(
-              // Larger cart button
-              height: 60,
-              width: 60,
-              child: FloatingActionButton(
-                elevation: 2.0,
-                shape: const CircleBorder(eccentricity: 1.0),
-
-                backgroundColor: const Color.fromARGB(13, 0, 0, 0),
-                // Black background color
-                onPressed: () {
-                  // Navigate to cart screen
-                },
-                child: const Icon(Icons.shopping_basket,
-                    size: 40, color: Color.fromARGB(255, 40, 150, 0)),
               ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.shopping_cart_checkout),
-              onPressed: () {
-                // Open chatbot
-              },
-            ),
-          ],
+              Container(
+                margin:
+                    EdgeInsets.fromLTRB(38 * fem, 0 * fem, 0 * fem, 0 * fem),
+                child: Text(
+                  'Categories',
+                  style: TextStyle(
+                    fontFamily: 'Urbanist',
+                    fontSize: 20 * ffem,
+                    fontWeight: FontWeight.w600,
+                    height: 1.2 * ffem / fem,
+                    color: const Color(0xff000000),
+                  ),
+                ),
+              ),
+              Container(
+                padding:
+                    EdgeInsets.fromLTRB(38 * fem, 31 * fem, 38 * fem, 32 * fem),
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      height: 163 * fem,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              selectedCategory = 'Tools';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              margin: EdgeInsets.fromLTRB(
+                                  0 * fem, 0 * fem, 24.6 * fem, 0 * fem),
+                              padding: EdgeInsets.fromLTRB(
+                                  6 * fem, 4 * fem, 5 * fem, 4 * fem),
+                              width: 129.4 * fem,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff02841e),
+                                borderRadius: BorderRadius.circular(20 * fem),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(
+                                    0 * fem, 4 * fem, 0 * fem, 0 * fem),
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffffffff),
+                                  borderRadius: BorderRadius.circular(20 * fem),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 1 * fem, 5 * fem),
+                                      width: 123 * fem,
+                                      height: 123 * fem,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(20 * fem),
+                                        child: Image.asset(
+                                          'assets/images/rectangle-190-4Ky.png',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 3 * fem, 0 * fem),
+                                      child: Text(
+                                        'Tools',
+                                        style: TextStyle(
+                                          fontFamily: 'Urbanist',
+                                          fontSize: 20 * ffem,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.2 * ffem / fem,
+                                          color: const Color(0xff000000),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 5 * fem),
+                          GestureDetector(
+                            onTap: () {
+                              selectedCategory = 'Seeds';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              padding: EdgeInsets.fromLTRB(
+                                  6 * fem, 4 * fem, 5 * fem, 4 * fem),
+                              width: 129.4 * fem,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff02841e),
+                                borderRadius: BorderRadius.circular(20 * fem),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(
+                                    0 * fem, 4 * fem, 0 * fem, 0 * fem),
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffffffff),
+                                  borderRadius: BorderRadius.circular(20 * fem),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 1 * fem, 5 * fem),
+                                      width: 123 * fem,
+                                      height: 123 * fem,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(20 * fem),
+                                        child: Image.asset(
+                                          'assets/images/rectangle-190-mr7.png',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 3 * fem, 0 * fem),
+                                      child: Text(
+                                        'Seeds',
+                                        style: TextStyle(
+                                          fontFamily: 'Urbanist',
+                                          fontSize: 20 * ffem,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.2 * ffem / fem,
+                                          color: const Color(0xff000000),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10 * fem,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 163 * fem,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              selectedCategory = 'Fertilizers';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              margin: EdgeInsets.fromLTRB(
+                                  0 * fem, 0 * fem, 24.6 * fem, 0 * fem),
+                              padding: EdgeInsets.fromLTRB(
+                                  6 * fem, 4 * fem, 5 * fem, 4 * fem),
+                              width: 129.4 * fem,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff02841e),
+                                borderRadius: BorderRadius.circular(20 * fem),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(
+                                    0 * fem, 4 * fem, 0 * fem, 0 * fem),
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffffffff),
+                                  borderRadius: BorderRadius.circular(20 * fem),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 1 * fem, 5 * fem),
+                                      width: 123 * fem,
+                                      height: 123 * fem,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(20 * fem),
+                                        child: Image.asset(
+                                          'assets/images/fertilize.png',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 3 * fem, 0 * fem),
+                                      child: Text(
+                                        'Fertilizers',
+                                        style: TextStyle(
+                                          fontFamily: 'Urbanist',
+                                          fontSize: 20 * ffem,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.2 * ffem / fem,
+                                          color: const Color(0xff000000),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 5 * fem),
+                          GestureDetector(
+                            onTap: () {
+                              selectedCategory = 'Crop Protection';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              padding: EdgeInsets.fromLTRB(
+                                  6 * fem, 4 * fem, 5 * fem, 4 * fem),
+                              width: 129.4 * fem,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff02841e),
+                                borderRadius: BorderRadius.circular(20 * fem),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(
+                                    0 * fem, 4 * fem, 0 * fem, 0 * fem),
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffffffff),
+                                  borderRadius: BorderRadius.circular(20 * fem),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 1 * fem, 5 * fem),
+                                      width: 123 * fem,
+                                      height: 123 * fem,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(20 * fem),
+                                        child: Image.asset(
+                                          'assets/images/rectangle-190.png',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 3 * fem, 0 * fem),
+                                      child: Text(
+                                        'Crop Protection',
+                                        style: TextStyle(
+                                          fontFamily: 'Urbanist',
+                                          fontSize: 15 * ffem,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.2 * ffem / fem,
+                                          color: const Color(0xff000000),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10 * fem,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 163 * fem,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              selectedCategory = 'Irrigation Products';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              margin: EdgeInsets.fromLTRB(
+                                  0 * fem, 0 * fem, 24.6 * fem, 0 * fem),
+                              padding: EdgeInsets.fromLTRB(
+                                  6 * fem, 4 * fem, 5 * fem, 4 * fem),
+                              width: 129.4 * fem,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff02841e),
+                                borderRadius: BorderRadius.circular(20 * fem),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(
+                                    0 * fem, 4 * fem, 0 * fem, 0 * fem),
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffffffff),
+                                  borderRadius: BorderRadius.circular(20 * fem),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 1 * fem, 5 * fem),
+                                      width: 123 * fem,
+                                      height: 123 * fem,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(20 * fem),
+                                        child: Image.asset(
+                                          'assets/images/rectangle-190-Avb.png',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 3 * fem, 0 * fem),
+                                      child: Text(
+                                        'Irrigation Products',
+                                        style: TextStyle(
+                                          fontFamily: 'Urbanist',
+                                          fontSize: 13 * ffem,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.2 * ffem / fem,
+                                          color: const Color(0xff000000),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 5 * fem),
+                          GestureDetector(
+                            onTap: () {
+                              selectedCategory = 'Pesticide/Fungicides';
+                              List<Item> items =
+                                  categorizedItems[selectedCategory]!;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Products(
+                                    category: selectedCategory,
+                                    items: items,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              padding: EdgeInsets.fromLTRB(
+                                  6 * fem, 4 * fem, 5 * fem, 4 * fem),
+                              width: 129.4 * fem,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff02841e),
+                                borderRadius: BorderRadius.circular(20 * fem),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(
+                                    0 * fem, 4 * fem, 0 * fem, 0 * fem),
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffffffff),
+                                  borderRadius: BorderRadius.circular(20 * fem),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 1 * fem, 5 * fem),
+                                      width: 123 * fem,
+                                      height: 123 * fem,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(20 * fem),
+                                        child: Image.asset(
+                                          'assets/images/rectangle-190-k9m.png',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 0 * fem, 3 * fem, 0 * fem),
+                                      child: Text(
+                                        'Pesticide',
+                                        style: TextStyle(
+                                          fontFamily: 'Urbanist',
+                                          fontSize: 20 * ffem,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.2 * ffem / fem,
+                                          color: const Color(0xff000000),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+// search.dart
 
-class CategoryWidget extends StatelessWidget {
-  final String category;
-  final String image;
-
-  const CategoryWidget({Key? key, required this.category, required this.image})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Image.asset(
-            image,
-            width: 200,
-            height: 60,
-          ),
-          Text(
-            category,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.white, // White text color
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
