@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:credentials_manager/credentials_manager.dart';
-import 'package:growise/pages/register.dart';
-import 'package:growise/pages/home.dart'; // Import your home page
+import 'package:growwise/pages/register.dart';
+//import 'package:growwise/pages/home.dart';
+import 'location.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -104,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
           // ignore: use_build_context_synchronously
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => const Maps()),
           );
         } else {
           // Show error message
