@@ -2,9 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:growwise/pages/homepage.dart';
 import 'package:growwise/pages/products.dart';
 import 'iteminfo.dart';
+//import 'search.dart'; // Import the search.dart file
+//import 'cart.dart'; // Import the cart.dart file
 
-class Market extends StatelessWidget {
+class Market extends StatefulWidget {
   const Market({Key? key}) : super(key: key);
+
+  @override
+  _MarketState createState() => _MarketState();
+}
+
+class _MarketState extends State<Market> {
+  int currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -13,42 +22,6 @@ class Market extends StatelessWidget {
     double ffem = fem * 0.97;
     String selectedCategory = ''; // Initialize selected category variable
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xff02831d),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white,
-        selectedFontSize: 15,
-        unselectedFontSize: 15, // Set selected label color to white
-        items: [
-          BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {},
-              icon: Image.asset('assets/images/image-3.png',
-                  width: 30 * fem, height: 30 * fem),
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                // Navigate to page associated with this icon
-              },
-              icon: Image.asset('assets/images/image-2.png',
-                  width: 30 * fem, height: 30 * fem),
-            ),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-              icon: IconButton(
-                onPressed: () {
-                  // Navigate to page associated with this icon
-                },
-                icon: Image.asset('assets/images/shopping-cart-1-1.png',
-                    width: 30 * fem, height: 30 * fem),
-              ),
-              label: 'Cart'),
-        ],
-      ),
       body: SizedBox(
         width: double.infinity,
         child: Container(
@@ -601,8 +574,6 @@ class Market extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    // Add more rows similarly for other categories
                   ],
                 ),
               ),
@@ -613,3 +584,5 @@ class Market extends StatelessWidget {
     );
   }
 }
+// search.dart
+
