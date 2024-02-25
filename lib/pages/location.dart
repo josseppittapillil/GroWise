@@ -1,128 +1,157 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'home.dart';
 
-class Locator extends StatelessWidget {
-  const Locator({Key? key}) : super(key: key);
+class Maps extends StatefulWidget {
+  const Maps({Key? key}) : super(key: key);
+
+  @override
+  State<Maps> createState() {
+    return MyAppState();
+  }
+}
+
+class MyAppState extends State<Maps> {
+  late MapController mapController;
+  List<Marker> markers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    mapController = MapController();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _getCurrentLocation(),
-      builder: (BuildContext context, AsyncSnapshot<Position> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // You can show a loading indicator here if needed
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          // Handle error
-          return const Center(
-            child: Text('Error fetching location'),
-          );
-        } else {
-          Position? currentLocation = snapshot.data;
-          return _buildUI(currentLocation);
-        }
-      },
+    return MyHomePage(mapController: mapController, markers: markers);
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  final MapController mapController;
+  final List<Marker> markers;
+
+  const MyHomePage(
+      {Key? key, required this.mapController, required this.markers})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: FlutterMap(
+        mapController: mapController,
+        options: const MapOptions(
+          initialCenter: LatLng(51.509364, -0.128928),
+          initialZoom: 9.2,
+        ),
+        children: [
+          TileLayer(
+            urlTemplate:
+                'https://api.mapbox.com/styles/v1/growise/clszugmpi00fg01pi8e216y6q/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZ3Jvd2lzZSIsImEiOiJjbHN6cHBsa2QwbmJxMnFwMnd3MXg1ZXV1In0.dJJDaDztb7-YCimEnmzGEg',
+            userAgentPackageName: 'com.example.app',
+            additionalOptions: const {
+              'accessToken':
+                  'pk.eyJ1IjoiZ3Jvd2lzZSIsImEiOiJjbHN6cHBsa2QwbmJxMnFwMnd3MXg1ZXV1In0.dJJDaDztb7-YCimEnmzGEg',
+              'id': 'mapbox.mapbox-streets-v8'
+            },
+          ),
+          /*MarkerLayer(markers: [
+              Marker(
+                width: 88.0,
+                height: 88.0,
+                point: LatLng(51.5, -0.09),
+                child: 
+              )
+            ])*/
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _getLocation(context);
+        },
+        child: const Icon(Icons.location_on),
+      ),
     );
   }
 
-  Future<Position> _getCurrentLocation() async {
-    return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-  }
+  void _getLocation(BuildContext context) async {
+    Location location = Location();
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
 
-  Widget _buildUI(Position? currentLocation) {
-    // Your existing UI code here
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
 
-    return SizedBox(
-      width: double.infinity,
-      height: 812, // Adjust the height accordingly
-      child: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Stack(
-          children: [
-            // Existing code...
-            const Positioned(
-              left: 22.5,
-              top: 676,
-              child: Align(
-                child: SizedBox(
-                  width: 331,
-                  height: 18,
-                  child: Text(
-                    'Place the pin on Your accurate location on the map',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Urbanist',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      height: 1.2,
-                      color: Color(0xffffffff),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 23,
-              top: 718,
-              child: TextButton(
-                onPressed: () {
-                  // Handle button press, and use currentLocation.latitude
-                  // and currentLocation.longitude for location information
-                },
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                ),
-                child: SizedBox(
-                  width: 330,
-                  height: 56,
-                  child: Container(
-                    color: const Color(0xff02841e),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Choose Your Location',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Urbanist',
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                          color: Color(0xffffffff),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 20,
-              top: 63,
-              child: Align(
-                child: SizedBox(
-                  width: 41,
-                  height: 41,
-                  child: TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                    ),
-                    child: Image.network(
-                      '[Image url]',
-                      width: 41,
-                      height: 41,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    LatLng currentLocation =
+        LatLng(_locationData.latitude!, _locationData.longitude!);
+
+    // Update map center to current location
+    mapController.move(currentLocation, 15.0);
+
+    // Show popup notification with latitude and longitude
+    Fluttertoast.showToast(
+      msg:
+          "Latitude: ${currentLocation.latitude}, Longitude: ${currentLocation.longitude}",
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 3,
+    );
+
+    // Add a marker at the current location
+    markers.add(
+      Marker(
+        width: 80.0,
+        height: 80.0,
+        point: currentLocation,
+        child: const Icon(
+          Icons.location_on,
+          color: Colors.green, // Set the color of the pointer to green
+          size: 40.0,
         ),
       ),
+    );
+
+    // Update the UI to display the marker
+    mapController.move(currentLocation, mapController.camera.zoom);
+
+    // Show success dialog with "Next" button
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Location Retrieved"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Navigate to the next page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
+              },
+              child: const Text("Next"),
+            ),
+          ],
+        );
+      },
     );
   }
 }
