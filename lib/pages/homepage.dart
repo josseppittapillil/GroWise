@@ -1,9 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:growwise/pages/demo.dart';
 import 'package:growwise/pages/newsletter.dart';
 import 'package:growwise/pages/home.dart';
 import 'package:growwise/pages/aibot.dart';
-import 'package:growwise/pages/market.dart';
-import 'package:growwise/pages/login.dart';
+
+//import 'package:growwise/pages/market.dart';
+//import 'package:growwise/pages/login.dart';
+class BottomNavExample extends StatefulWidget {
+  const BottomNavExample({super.key});
+
+  @override
+  _BottomNavExampleState createState() => _BottomNavExampleState();
+}
+
+class _BottomNavExampleState extends State<BottomNavExample> {
+  int _selectedIndex = 0;
+
+  static final List<Widget> _widgetOptions = <Widget>[
+    const Homepage(),
+    const NotificationPage(),
+    const BottomNavBar(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications_active),
+            label: 'Notification',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_bag),
+            label: 'Market',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NotificationPage extends StatelessWidget {
+  const NotificationPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text('Notification Page Content'),
+      ),
+    );
+  }
+}
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -163,38 +230,6 @@ class Homepage extends StatelessWidget {
                   const NewsletterWidget(), // Use your NewsletterWidget here
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Color.fromARGB(181, 40, 210, 6),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                );
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {
-                // Handle settings button press
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.shopping_cart),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Market()),
-                );
-              },
             ),
           ],
         ),
