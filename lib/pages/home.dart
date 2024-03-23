@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:growwise/pages/homepage.dart';
+import 'package:growise/pages/homepage.dart';
 
 class ImageItem {
   final String imagePath;
