@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:growwise/pages/demo.dart';
-import 'package:growwise/pages/newsletter.dart';
-import 'package:growwise/pages/home.dart';
-import 'package:growwise/pages/aibot.dart';
+import 'package:growise/pages/newsletter.dart';
+import 'Market.dart';
 
-//import 'package:growwise/pages/market.dart';
-//import 'package:growwise/pages/login.dart';
+import 'package:fancy_bottom_navigation_plus/fancy_bottom_navigation_plus.dart';
+import 'package:growise/pages/home.dart';
+import 'package:growise/pages/aibot.dart';
+
 class BottomNavExample extends StatefulWidget {
-  const BottomNavExample({super.key});
+  const BottomNavExample({Key? key}) : super(key: key);
 
   @override
   _BottomNavExampleState createState() => _BottomNavExampleState();
@@ -19,7 +19,7 @@ class _BottomNavExampleState extends State<BottomNavExample> {
   static final List<Widget> _widgetOptions = <Widget>[
     const Homepage(),
     const NotificationPage(),
-    const BottomNavBar(),
+    const Market(),
   ];
 
   void _onItemTapped(int index) {
@@ -34,33 +34,24 @@ class _BottomNavExampleState extends State<BottomNavExample> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_active),
-            label: 'Notification',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag),
-            label: 'Market',
-          ),
+      bottomNavigationBar: FancyBottomNavigationPlus(
+        circleColor: Colors.green,
+        barBackgroundColor: Colors.white,
+        initialSelection: _selectedIndex,
+        tabs: [
+          TabData(icon: const Icon(Icons.home), title: "Home"),
+          TabData(
+              icon: const Icon(Icons.notification_add), title: "Notification"),
+          TabData(icon: const Icon(Icons.shopping_cart), title: "Market"),
         ],
+        onTabChangedListener: _onItemTapped,
       ),
     );
   }
 }
 
 class NotificationPage extends StatelessWidget {
-  const NotificationPage({super.key});
+  const NotificationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +64,7 @@ class NotificationPage extends StatelessWidget {
 }
 
 class Homepage extends StatelessWidget {
-  const Homepage({super.key});
+  const Homepage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
