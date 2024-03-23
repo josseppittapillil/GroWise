@@ -1,13 +1,15 @@
 //import 'package:growise/pages/products.dart';
 class Item {
+  final String imageAsset;
   final String info;
   final String price;
-  final String imageAsset;
+  bool addedToCart; // Flag to indicate whether item is added to cart
 
   Item({
+    required this.imageAsset,
     required this.info,
     required this.price,
-    required this.imageAsset,
+    this.addedToCart = false, // Default value is false
   });
 }
 
@@ -78,56 +80,56 @@ Map<String, List<Item>> categorizedItems = {
     Item(
       info: 'High Yield Variety Special Wheat Seeds (Pbw 725), 40 Kg',
       price: '₹1399',
-      imageAsset: 'assets/images/products/seed1.png',
+      imageAsset: 'assets/images/products/seed1.jpg',
     ),
     Item(
       info: 'Vedaka Premium Raw Pumpkin Seeds | Fibre rich 100g',
       price: '₹114',
-      imageAsset: 'assets/images/products/seed2.png',
+      imageAsset: 'assets/images/products/seed2.jpg',
     ),
     Item(
       info: 'Vedaka Premium Raw Sunflower Seeds | 200 g',
       price: '₹105',
-      imageAsset: 'assets/images/products/seed3.png',
+      imageAsset: 'assets/images/products/seed3.jpg',
     ),
     Item(
       info: 'UGAOO Improved Carrot Nantes Vegetable Seeds (Red, Pack of 2g)',
       price: '₹145',
-      imageAsset: 'assets/images/products/seed4.png',
+      imageAsset: 'assets/images/products/seed4.jpg',
     ),
     Item(
       info: 'Royal Paradise Garden Rare Exotic 25 Tree seeds for Growing',
       price: '₹130',
-      imageAsset: 'assets/images/products/seed5.png',
+      imageAsset: 'assets/images/products/seed5.jpg',
     ),
     Item(
       info: 'UGAOO Long Cucumber Vegetable Seed (Green, Pack of 1.2g)',
       price: '₹99',
-      imageAsset: 'assets/images/products/seed6.png',
+      imageAsset: 'assets/images/products/seed6.jpg',
     ),
     Item(
       info:
           'UGAOO Palak or Spinach Vegetable Seeds (Green, Pack of 16 g) 1700 Seeds',
       price: '₹100',
-      imageAsset: 'assets/images/products/seed7.png',
+      imageAsset: 'assets/images/products/seed7.jpg',
     ),
     Item(
       info:
           'Nutmeg/Jaathi (Seedling) Fruit/Medicinal Live Plant (Home & Garden)',
       price: '₹199',
-      imageAsset: 'assets/images/products/seed8.png',
+      imageAsset: 'assets/images/products/seed8.jpg',
     ),
     Item(
       info:
           'ARKA ARJUN FRENCH BEANS HYBRID DISEASE RESISTANT VEGETABLE SEEDS (10 SEEDS)',
       price: '₹99',
-      imageAsset: 'assets/images/products/seed9.png',
+      imageAsset: 'assets/images/products/seed9.jpg',
     ),
     Item(
       info:
           'Iagrifarm Moringa/Drumstick Seeds - PKM2 Variety - 1 Kg - Approx 3500 seeds',
       price: '₹2999',
-      imageAsset: 'assets/images/products/seed10.png',
+      imageAsset: 'assets/images/products/seed10.jpg',
     ),
 
     // Add more items as needed
