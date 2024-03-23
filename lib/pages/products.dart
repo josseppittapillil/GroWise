@@ -1,7 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:growwise/pages/iteminfo.dart';
+import 'iteminfo.dart';
 
-class Products extends StatelessWidget {
+class Cart {
+  // Singleton Cart class
+  static final Cart _instance = Cart._internal();
+
+  factory Cart() {
+    return _instance;
+  }
+
+  Cart._internal();
+
+  final List<Item> _cartItems = [];
+
+  List<Item> get cartItems => _cartItems;
+
+  void addToCart(Item item) {
+    _cartItems.add(item);
+  }
+}
+
+class Products extends StatefulWidget {
   final String category;
   final List<Item> items;
 
@@ -9,137 +28,142 @@ class Products extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    double baseWidth = 375;
-    double fem = MediaQuery.of(context).size.width / baseWidth;
-    double ffem = fem * 0.97; // Adjusted font factor
+  _ProductsState createState() => _ProductsState();
+}
 
+class _ProductsState extends State<Products> {
+  final Cart _cart = Cart(); // Use the Cart singleton
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(60 * fem), // Set the height of the app bar
-        child: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0, // No shadow
-          centerTitle: true,
-          title: Text(
-            category, // Display the selected category
-            style: TextStyle(
-              fontFamily: 'Urbanist',
-              fontSize: 20 * ffem,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xff02841e),
-            ),
-          ),
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context); // Navigate back to the previous screen
+      appBar: AppBar(
+        title: Text(widget.category),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CartPage1(cartItems: _cart.cartItems),
+                ),
+              );
             },
-            child: Container(
-              margin: EdgeInsets.fromLTRB(16 * fem, 0 * fem, 0 * fem, 0 * fem),
-              width: 35 * fem,
-              height: 35 * fem,
-              child: Image.asset(
-                'assets/images/back1.png',
-                width: 35 * fem,
-                height: 35 * fem,
-              ),
-            ),
+            icon: const Icon(Icons.shopping_cart),
           ),
-        ),
+        ],
       ),
-      body: ProductsList(
-        items: items,
-        fem: fem,
-        ffem: ffem,
-      ), // Pass fem and ffem to ProductsList
+      body: ListView.builder(
+        itemCount: widget.items.length,
+        itemBuilder: (context, index) {
+          final item = widget.items[index];
+          return Container(
+            color: Colors.grey[300],
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              children: [
+                Image.asset(
+                  item.imageAsset,
+                  width: 400,
+                  height: 300,
+                  fit: BoxFit.fill,
+                ),
+                const SizedBox(height: 10),
+                ListTile(
+                  title: Text(item.info),
+                  subtitle: Text(item.price),
+                  trailing: TextButton(
+                    onPressed: () {
+                      _cart.addToCart(
+                          item); // Add item to cart using the singleton
+                    },
+                    child: const Icon(Icons.add_shopping_cart),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
 
-class ProductsList extends StatelessWidget {
-  final List<Item> items;
-  final double fem; // Add fem variable
-  final double ffem; // Add ffem variable
+class CartPage1 extends StatelessWidget {
+  final List<Item> cartItems;
 
-  const ProductsList(
-      {Key? key, required this.items, required this.fem, required this.ffem})
-      : super(key: key);
+  const CartPage1({Key? key, required this.cartItems}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        return Container(
-          margin: EdgeInsets.all(16 * fem),
-          padding: EdgeInsets.all(16 * fem),
-          decoration: BoxDecoration(
-            color: Colors.grey[200], // Grey background color
-            borderRadius:
-                BorderRadius.circular(20 * fem), // Adjusted border radius
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Cart'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_forever_outlined),
+            onPressed: () {
+              // Clear all items in the cart
+              cartItems.clear();
+            },
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset(
-                items[index].imageAsset,
-                width: double.infinity,
-                height: 150 * fem, // Adjusted height
-                fit: BoxFit.cover,
-              ),
-              SizedBox(height: 10 * fem), // Add some spacing
-              Text(
-                items[index].info,
-                style: TextStyle(
-                  fontFamily: 'Urbanist',
-                  fontSize: 18 * ffem,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xff000000),
-                ),
-              ),
-              SizedBox(height: 5 * fem), // Add some spacing
-              Text(
-                items[index].price,
-                style: TextStyle(
-                  fontFamily: 'Urbanist',
-                  fontSize: 16 * ffem,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xff000000),
-                ),
-              ),
-              // Add some spacing
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    // Implement Add To Cart functionality here
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 239, 238, 238),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20 * fem,
-                      vertical: 0 * fem,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10 * fem),
-                    ),
-                  ),
-                  child: Text(
-                    'Add To Cart',
-                    style: TextStyle(
-                      fontFamily: 'Urbanist',
-                      fontSize: 16 * ffem,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.green,
-                    ),
+        ],
+      ),
+      body: ListView.builder(
+        itemCount: cartItems.length,
+        itemBuilder: (context, index) {
+          final item = cartItems[index];
+          return Dismissible(
+            key: Key(item.info),
+            onDismissed: (direction) {
+              // Remove the dismissed item from the cart
+              cartItems.removeAt(index);
+
+              // Show a snackbar to undo the deletion
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('Item removed from the cart'),
+                  action: SnackBarAction(
+                    label: 'Undo',
+                    onPressed: () {
+                      // Add the item back to the cart
+                      cartItems.insert(index, item);
+                    },
                   ),
                 ),
+              );
+            },
+            background: Container(
+              color: Colors.red,
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 20),
+              child: const Icon(Icons.delete_forever_outlined,
+                  color: Colors.white),
+            ),
+            child: Container(
+              color: Colors.grey[300],
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              child: Column(
+                children: [
+                  Image.asset(
+                    item.imageAsset,
+                    width: 250,
+                    height: 200,
+                    fit: BoxFit.fill,
+                  ),
+                  const SizedBox(height: 20),
+                  ListTile(
+                    title: Text(item.info),
+                    subtitle: Text(item.price),
+                  ),
+                ],
               ),
-            ],
-          ),
-        );
-      },
+            ),
+          );
+        },
+      ),
     );
   }
 }
