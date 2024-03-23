@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:credentials_manager/credentials_manager.dart';
-import 'package:growwise/pages/register.dart';
+import 'package:growise/pages/register.dart';
 //import 'package:growwise/pages/home.dart';
 import 'location.dart';
 
