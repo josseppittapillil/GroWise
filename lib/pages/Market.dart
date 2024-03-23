@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:growwise/pages/homepage.dart';
-import 'package:growwise/pages/products.dart';
+import 'package:growise/pages/homepage.dart';
+import 'package:growise/pages/products.dart'; // Import the cart.dart file
 import 'iteminfo.dart';
-//import 'search.dart'; // Import the search.dart file
-//import 'cart.dart'; // Import the cart.dart file
 
 class Market extends StatefulWidget {
   const Market({Key? key}) : super(key: key);
@@ -59,7 +57,7 @@ class _MarketState extends State<Market> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Homepage()),
+                              builder: (context) => const BottomNavExample()),
                         );
                       },
                       child: Container(
@@ -68,7 +66,7 @@ class _MarketState extends State<Market> {
                         width: 35 * fem,
                         height: 35 * fem,
                         child: Image.asset(
-                          'assets/images/back1.png',
+                          'assets/images/back.png',
                           width: 41 * fem,
                           height: 41 * fem,
                         ),
@@ -584,5 +582,3 @@ class _MarketState extends State<Market> {
     );
   }
 }
-// search.dart
-
