@@ -59,7 +59,8 @@ class AccessPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const AdminHome()),
+                      MaterialPageRoute(
+                          builder: (context) => const AdminHome()),
                     );
                   },
                 ),
@@ -71,7 +72,8 @@ class AccessPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const LoginPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
                     );
                   },
                 ),
@@ -108,7 +110,7 @@ class AccessPage extends StatelessWidget {
     double ffem = fem * 0.97;
 
     return Container(
-      padding: EdgeInsets.fromLTRB(30 * fem, 30* fem, 36 * fem, 14 * fem),
+      padding: EdgeInsets.fromLTRB(30 * fem, 30 * fem, 36 * fem, 14 * fem),
       height: 125 * fem,
       width: 125 * fem,
       decoration: BoxDecoration(
