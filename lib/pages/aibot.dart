@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:growwise/pages/prompts.dart';
+import 'package:growise/pages/prompts.dart';
 
 class AiBotScreen extends StatefulWidget {
   const AiBotScreen({Key? key}) : super(key: key);
@@ -136,7 +136,7 @@ class _AiBotScreenState extends State<AiBotScreen> {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          'Bearer *********',
+          'Bearer xxxx',
     };
     Map<String, dynamic> body = {
       'model': 'gpt-3.5-turbo-instruct', // DialoGPT model
