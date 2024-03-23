@@ -11,11 +11,11 @@ class AdminHome extends StatelessWidget {
         leading: IconButton(
           icon: Image.asset('assets/images/back.png'),
           onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AccessPage()),
-                    );
-                  },
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const AccessPage()),
+            );
+          },
         ),
         title: Text('Admin Home'),
         // You can customize other properties of the AppBar here
@@ -30,5 +30,3 @@ class AdminHome extends StatelessWidget {
     );
   }
 }
-
-  
