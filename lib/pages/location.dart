@@ -34,8 +34,7 @@ class MyHomePage extends StatelessWidget {
   final MapController mapController;
   final List<Marker> markers;
 
-  const MyHomePage(
-      {Key? key, required this.mapController, required this.markers})
+  MyHomePage({Key? key, required this.mapController, required this.markers})
       : super(key: key);
 
   @override
@@ -80,30 +79,29 @@ class MyHomePage extends StatelessWidget {
 
   void _getLocation(BuildContext context) async {
     Location location = Location();
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
 
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
         return;
       }
     }
 
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
 
-    _locationData = await location.getLocation();
+    locationData = await location.getLocation();
     LatLng currentLocation =
-        LatLng(_locationData.latitude!, _locationData.longitude!);
-
+        LatLng(locationData.latitude!, locationData.longitude!);
     // Update map center to current location
     mapController.move(currentLocation, 15.0);
 
@@ -133,6 +131,7 @@ class MyHomePage extends StatelessWidget {
     mapController.move(currentLocation, mapController.camera.zoom);
 
     // Show success dialog with "Next" button
+    // ignore: use_build_context_synchronously
     showDialog(
       context: context,
       builder: (BuildContext context) {
