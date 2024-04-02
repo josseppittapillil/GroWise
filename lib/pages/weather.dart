@@ -32,7 +32,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
   }
 
   Future<void> fetchData() async {
-    const apiKey = '65ee68053e004ef8bf693550240203';
+    const apiKey = 'f2957dcefa844bf7a83152148240204';
     const apiUrl =
         'http://api.weatherapi.com/v1/current.json?key=$apiKey&q=9.531650,76.820450&aqi=no';
 
