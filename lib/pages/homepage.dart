@@ -1,13 +1,14 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:growise/pages/newsletter.dart';
-import 'package:growise/pages/weather.dart';
+import 'package:growwise/pages/book.dart';
+import 'package:growwise/pages/newsletter.dart';
+import 'package:growwise/pages/location.dart';
+import 'package:growwise/pages/notif.dart';
 import 'Market.dart';
 
 import 'package:fancy_bottom_navigation_plus/fancy_bottom_navigation_plus.dart';
 // import 'package:growise/pages/home.dart';
-import 'package:growise/pages/aibot.dart';
 
 class BottomNavExample extends StatefulWidget {
   const BottomNavExample({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _BottomNavExampleState extends State<BottomNavExample> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     const Homepage(),
-    const NotificationPage(),
+    AppointmentStatusPage(),
     const Market(),
   ];
 
@@ -84,64 +85,6 @@ class Homepage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // const SizedBox(height: 35),
-            // Container(
-            //   margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 0 * fem, 28 * fem),
-            //   width: 147 * fem,
-            //   height: 26 * fem,
-            //   child: Stack(
-            //     children: [
-            //       Positioned(
-            //         left: 0 * fem,
-            //         top: 0 * fem,
-            //         child: Align(
-            //           child: SizedBox(
-            //             width: 146 * fem,
-            //             height: 26 * fem,
-            //             child: Container(
-            //               decoration: BoxDecoration(
-            //                 borderRadius: BorderRadius.circular(10 * fem),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //       Positioned(
-            //         left: 5 * fem,
-            //         top: 1 * fem,
-            //         child: Align(
-            //           child: SizedBox(
-            //             width: 120 * fem,
-            //             height: 24 * fem,
-            //             child: TextButton(
-            //               onPressed: () {
-            //                 Navigator.pushReplacement(
-            //                   context,
-            //                   MaterialPageRoute(
-            //                       builder: (context) => const HomeScreen()),
-            //                 );
-            //               },
-            //               style: TextButton.styleFrom(
-            //                 padding: EdgeInsets.zero,
-            //               ),
-            //               child: Text(
-            //                 'Change Crop',
-            //                 textAlign: TextAlign.center,
-            //                 style: TextStyle(
-            //                   fontSize: 19 * ffem,
-            //                   fontWeight: FontWeight.w600,
-            //                   height: 1.2 * ffem / fem,
-            //                   color: const Color(0xff02841e),
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-
             // Image and Text Section
             Container(
               margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 0 * fem, 0 * fem),
@@ -223,7 +166,7 @@ class Homepage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const AiBotScreen()),
+                              builder: (context) => AppointmentBookingPage()),
                         );
                       },
                       child: Text(
@@ -232,50 +175,17 @@ class Homepage extends StatelessWidget {
                           fontSize: 17 * ffem,
                           fontWeight: FontWeight.w600,
                           height: 1 * ffem / fem,
-                          color: Color.fromARGB(255, 0, 0, 0),
+                          color: const Color.fromARGB(255, 0, 0, 0),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 6 * fem, 0 * fem),
-                padding:
-                    EdgeInsets.fromLTRB(2 * fem, 35 * fem, 20 * fem, 0 * fem),
-                width: 170 * fem,
-                height: 170,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15 * fem),
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/weather.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const WeatherWidget()),
-                        );
-                      },
-                      child: Text(
-                        'Weather',
-                        style: TextStyle(
-                          fontSize: 17 * ffem,
-                          fontWeight: FontWeight.w600,
-                          height: 1 * ffem / fem,
-                          color: Color.fromARGB(255, 0, 0, 0),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              const SizedBox(
+                width: 6,
               ),
+              const WeatherInfoWidget()
             ]),
 
             // Newsletter Section
