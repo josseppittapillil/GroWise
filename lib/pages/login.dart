@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:credentials_manager/credentials_manager.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Authentication
 import 'package:growise/pages/register.dart';
-//import 'package:growwise/pages/home.dart';
 import 'location.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -75,30 +73,15 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
-        // Retrieve user credentials from credentials_manager
-        final credentialsManager = CredentialsManager(
-          storageKey: 'storage_key',
-          useAndroidEncryptedSharedPreferences: true,
-        );
+        try {
+          // ignore: unused_local_variable
+          UserCredential userCredential =
+              await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: _emailController.text,
+            password: _passwordController.text,
+          );
 
-        final savedCredentials = await credentialsManager.getSavedCredentials();
-
-        // Check if entered email and password match any stored credentials
-        final enteredEmail = _emailController.text;
-        final enteredPassword = _passwordController.text;
-
-        bool isCredentialsMatch = false;
-
-        for (final credential in savedCredentials) {
-          if (credential.loginOrEmail == enteredEmail &&
-              credential.password == enteredPassword) {
-            isCredentialsMatch = true;
-            break;
-          }
-        }
-
-        if (isCredentialsMatch) {
-          // Show success message
+          // If login is successful, show success dialog
           _showSuccessDialog('Success', 'Login Successful');
 
           // Redirect to the home page
@@ -107,8 +90,8 @@ class _LoginPageState extends State<LoginPage> {
             context,
             MaterialPageRoute(builder: (context) => const Maps()),
           );
-        } else {
-          // Show error message
+        } catch (e) {
+          // If login fails, show error dialog
           _showErrorDialog('Error', 'Invalid User Credentials');
         }
       },
