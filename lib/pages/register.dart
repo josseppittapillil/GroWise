@@ -1,33 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:credentials_manager/credentials_manager.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:growise/pages/login.dart';
-
-class UserCredentials {
-  String username;
-  String email;
-  String password;
-
-  UserCredentials({
-    required this.username,
-    required this.email,
-    required this.password,
-  });
-}
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _RegisterPageState createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,40 +21,18 @@ class _RegisterPageState extends State<RegisterPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const SizedBox(height: 30),
-              _buildBackButton(context),
               const SizedBox(height: 50.0),
               _buildHeader(),
               const SizedBox(height: 50.0),
-              _buildTextField('Username', _usernameController),
-              const SizedBox(height: 16.0),
               _buildTextField('Email', _emailController),
               const SizedBox(height: 16.0),
               _buildTextField('Password', _passwordController,
-                  obscureText: true),
-              const SizedBox(height: 16.0),
-              _buildTextField('Confirm Password', _confirmPasswordController,
                   obscureText: true),
               const SizedBox(height: 32.0),
               _buildRegisterButton(context),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildBackButton(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginPage()),
-          );
-        },
       ),
     );
   }
@@ -120,40 +82,25 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _buildRegisterButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
-        // Check if the passwords match
-        if (_passwordController.text != _confirmPasswordController.text) {
-          // Show error dialog
-          _showErrorDialog('Error', 'Passwords don\'t match');
-          return;
+        try {
+          // Create user with email and password
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text,
+            password: _passwordController.text,
+          );
+
+          // Show success message
+          _showSuccessDialog('Success', 'Registered Successfully');
+
+          // Navigate to the login page
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
+        } catch (e) {
+          // Show error message
+          _showErrorDialog('Error', e.toString());
         }
-
-        // Check if all fields are filled
-        if (_usernameController.text.isEmpty ||
-            _emailController.text.isEmpty ||
-            _passwordController.text.isEmpty) {
-          _showErrorDialog('Error', 'All fields are required');
-          return;
-        }
-
-        // Store user credentials
-        final userCredentials = UserCredentials(
-          username: _usernameController.text,
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
-
-        // Wait for user credentials to be saved
-        await saveUserCredentials(userCredentials);
-
-        // Show success message
-        _showSuccessDialog('Success', 'Registered Successfully');
-
-        // Navigate to the login page
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-        );
       },
       style: ElevatedButton.styleFrom(
         backgroundColor:
@@ -167,21 +114,6 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Text('Register Now'),
       ),
     );
-  }
-
-  Future<void> saveUserCredentials(UserCredentials credentials) async {
-    final credentialsManager = CredentialsManager(
-      storageKey: 'storage_key',
-      useAndroidEncryptedSharedPreferences: true,
-    );
-
-    final credentialModel = CredentialModel(
-      id: credentials.email,
-      loginOrEmail: credentials.email,
-      password: credentials.password,
-    );
-
-    await credentialsManager.saveCredential(credentialModel);
   }
 
   void _showErrorDialog(String title, String content) {
