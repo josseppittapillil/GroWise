@@ -1,10 +1,10 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:growwise/pages/book.dart';
-import 'package:growwise/pages/newsletter.dart';
-import 'package:growwise/pages/location.dart';
-import 'package:growwise/pages/notif.dart';
+import 'package:growise/pages/book.dart';
+import 'package:growise/pages/newsletter.dart';
+import 'package:growise/pages/location.dart';
+import 'package:growise/pages/notif.dart';
 import 'Market.dart';
 
 import 'package:fancy_bottom_navigation_plus/fancy_bottom_navigation_plus.dart';
