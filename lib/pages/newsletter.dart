@@ -48,7 +48,7 @@ class _NewsletterWidgetState extends State<NewsletterWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300.0,
+      height: 292.0,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         border: Border.all(color: const Color(0xff02841e), width: 2.0),
