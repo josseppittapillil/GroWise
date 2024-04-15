@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "848163845360",
+    "project_id": "growise-95ce0",
+    "storage_bucket": "growise-95ce0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848163845360:android:3e0f369581e085988c7e35",
+        "android_client_info": {
+          "package_name": "com.example.growise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-gATOnhwuIahQTBP-dRyCIwAn71KgqGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
