@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'iteminfo.dart';
+import 'products.dart';
 import 'prompts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -10,6 +13,9 @@ import 'package:http/http.dart' as http;
 
 String loc = "";
 String pla = "123";
+String selectedCategory = "";
+List<Item> categoryInfo = List.empty();
+bool _showTextField = true;
 
 class Maps extends StatefulWidget {
   const Maps({Key? key}) : super(key: key);
@@ -76,10 +82,14 @@ class MyHomePage extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xff02841e),
         onPressed: () {
           _getLocation(context);
         },
-        child: const Icon(Icons.location_on),
+        child: const Icon(
+          Icons.location_on,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -151,7 +161,7 @@ class MyHomePage extends StatelessWidget {
                 // Navigate to the next page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  MaterialPageRoute(builder: (context) => const WelcomePage()),
                 );
               },
               child: const Text("Next"),
@@ -198,7 +208,9 @@ class _WeatherInfoWidgetState extends State<WeatherInfoWidget> {
 
         setState(() {
           location = data['location']['name'];
-          print("Location retrieved: $location");
+          if (kDebugMode) {
+            print("Location retrieved: $location");
+          }
           weatherCondition = data['current']['condition']['text'];
           temperature = data['current']['temp_c'];
           localtime = data['location']['localtime'];
@@ -206,18 +218,24 @@ class _WeatherInfoWidgetState extends State<WeatherInfoWidget> {
           iconUrl = 'https:' + data['current']['condition']['icon'];
           isLoading = false;
           pla = location;
-          print("confirmation: $pla"); // Data loaded successfully
+          if (kDebugMode) {
+            print("confirmation: $pla");
+          } // Data loaded successfully
         });
       } else {
         // Handle error, show error message or retry logic
-        print('Error: ${response.statusCode}');
+        if (kDebugMode) {
+          print('Error: ${response.statusCode}');
+        }
         setState(() {
           isLoading = false; // Error occurred while fetching data
         });
       }
     } catch (e) {
       // Handle network or other errors
-      print('Error: $e');
+      if (kDebugMode) {
+        print('Error: $e');
+      }
       setState(() {
         isLoading = false; // Error occurred while fetching data
       });
@@ -353,32 +371,79 @@ class _AiBotScreenState extends State<AiBotScreen> {
     return Container(
       padding: const EdgeInsets.all(8.0),
       color: Colors.white,
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _messageController,
-              decoration: const InputDecoration(
-                hintText: 'Type a message...',
-                border: InputBorder.none,
-              ),
+      child: _showTextField
+          ? Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _messageController,
+                        decoration: const InputDecoration(
+                          hintText: 'Type a message...',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.send),
+                      onPressed: () {
+                        _sendMessage();
+                      },
+                    ),
+                  ],
+                ),
+                if (_messages.isNotEmpty &&
+                    _messages.first.text.contains('Redirect to Marketplace?'))
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          _addResponse(
+                              "Exited Marketplace...\nIs there anything else I can help you with?");
+                          _handleRedirection('YES');
+                        },
+                        child: const Text('YES'),
+                      ),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          _handleRedirection('NO');
+                        },
+                        child: const Text('NO'),
+                      ),
+                    ],
+                  ),
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    _handleRedirection('YES');
+                  },
+                  child: const Text('YES'),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    _handleRedirection('NO');
+                  },
+                  child: const Text('NO'),
+                ),
+              ],
             ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: () {
-              _sendMessage();
-            },
-          ),
-        ],
-      ),
     );
   }
 
   void _sendMessage() async {
     String message = _messageController.text.trim();
     String location = pla;
-    print("ai loc: $location"); // Replace with your location retrieval logic
+    if (kDebugMode) {
+      print("ai loc: $location");
+    } // Replace with your location retrieval logic
 
     if (message.isNotEmpty) {
       setState(() {
@@ -391,22 +456,55 @@ class _AiBotScreenState extends State<AiBotScreen> {
             "Hello, I am your personal agricultural assistant. How may I assist you today?";
         _addResponse(response);
       } else if (_isAgricultureQuery(message)) {
-        // Check if the query contains "recommend" and "crops"
-        if (message.toLowerCase().contains("recommend") &&
-            message.toLowerCase().contains("crops")) {
-          print("Location retrieved: $location");
-          if (location.isNotEmpty) {
-            message += " in $location"; // Append location to the query
-            print("Final query with location: $message");
-          } // Append location to the query
+        // Check if the query contains "suggest" or "recommend" and a category
+        if ((message.toLowerCase().contains("suggest") ||
+                message.toLowerCase().contains("recommend")) &&
+            categorizedItems.keys.any(
+                (key) => message.toLowerCase().contains(key.toLowerCase()))) {
+          selectedCategory = categorizedItems.keys.firstWhere(
+              (key) => message.toLowerCase().contains(key.toLowerCase()));
+
+          // Build the response with top 4 items in the selected category
+          categoryInfo = categorizedItems[selectedCategory]!;
+          String categoryInfo1 = categorizedItems[selectedCategory]!
+              .sublist(0, 4)
+              .map((item) => "${item.info}\n")
+              .join();
+
+          // Prompt for redirection
+          List<String> categoryInfoLines = categoryInfo1.split('\n');
+          List<String> formattedCategoryInfo =
+              categoryInfoLines.map((info) => "* $info\t").toList();
+          String redirectionPrompt =
+              "\nThe Featured \"$selectedCategory\" are:\n${formattedCategoryInfo.join('\n')}\n\nRedirect to Marketplace?";
+
+          _addResponse(redirectionPrompt);
+        } else {
+          String aiResponse = await getAIResponse(message);
+          _addResponse(aiResponse);
         }
-        String aiResponse = await getAIResponse(message);
-        _addResponse(aiResponse);
       } else {
         String response =
             "This Assistant is Fine-Tuned for your Agricultural Queries and does not have Knowledge beyond the topic.";
         _addResponse(response);
       }
+    }
+    // Check if the last message is a redirection prompt
+  }
+
+  void _handleRedirection(String userResponse) {
+    if (userResponse == 'YES') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Products(
+            category: selectedCategory,
+            items: categoryInfo,
+          ),
+        ),
+      );
+    } else if (userResponse == 'NO') {
+      _addResponse("Is there anything else I can help you with?");
     }
   }
 
@@ -438,8 +536,7 @@ class _AiBotScreenState extends State<AiBotScreen> {
     String url = 'https://api.openai.com/v1/completions';
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer xxxxx',
+      'Authorization': 'Bearer xxxx',
     };
     Map<String, dynamic> body = {
       'model': 'gpt-3.5-turbo-instruct', // DialoGPT model
@@ -457,8 +554,12 @@ class _AiBotScreenState extends State<AiBotScreen> {
       Map<String, dynamic> data = json.decode(response.body);
       return data['choices'][0]['text'].toString();
     } else {
-      print('Failed to get AI response: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      if (kDebugMode) {
+        print('Failed to get AI response: ${response.statusCode}');
+      }
+      if (kDebugMode) {
+        print('Response body: ${response.body}');
+      }
       throw Exception('Failed to get AI response');
     }
   }
