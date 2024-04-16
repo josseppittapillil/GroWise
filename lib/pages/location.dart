@@ -53,7 +53,6 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: FlutterMap(
         mapController: mapController,
         options: const MapOptions(
@@ -71,14 +70,6 @@ class MyHomePage extends StatelessWidget {
               'id': 'mapbox.mapbox-streets-v8'
             },
           ),
-          /*MarkerLayer(markers: [
-              Marker(
-                width: 88.0,
-                height: 88.0,
-                point: LatLng(51.5, -0.09),
-                child: 
-              )
-            ])*/
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -119,7 +110,7 @@ class MyHomePage extends StatelessWidget {
     locationData = await location.getLocation();
     LatLng currentLocation =
         LatLng(locationData.latitude!, locationData.longitude!);
-    // Update map center to current location
+
     mapController.move(currentLocation, 15.0);
 
     // Show popup notification with latitude and longitude
@@ -456,8 +447,21 @@ class _AiBotScreenState extends State<AiBotScreen> {
             "Hello, I am your personal agricultural assistant. How may I assist you today?";
         _addResponse(response);
       } else if (_isAgricultureQuery(message)) {
-        // Check if the query contains "suggest" or "recommend" and a category
-        if ((message.toLowerCase().contains("suggest") ||
+        if (message.toLowerCase().contains("recommend") &&
+            message.toLowerCase().contains("crops")) {
+          if (kDebugMode) {
+            print("Location retrieved: $location");
+          }
+          if (location.isNotEmpty) {
+            message += " in $location"; // Append location to the query
+            if (kDebugMode) {
+              print("Final query with location: $message");
+            }
+          }
+          String aiResponse = await getAIResponse(message);
+          _addResponse(aiResponse);
+          // Append location to the query
+        } else if ((message.toLowerCase().contains("suggest") ||
                 message.toLowerCase().contains("recommend")) &&
             categorizedItems.keys.any(
                 (key) => message.toLowerCase().contains(key.toLowerCase()))) {
@@ -536,7 +540,8 @@ class _AiBotScreenState extends State<AiBotScreen> {
     String url = 'https://api.openai.com/v1/completions';
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer xxxx',
+      'Authorization':
+          'Bearer xxx',
     };
     Map<String, dynamic> body = {
       'model': 'gpt-3.5-turbo-instruct', // DialoGPT model
