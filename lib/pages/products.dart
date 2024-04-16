@@ -34,6 +34,16 @@ class Products extends StatefulWidget {
 class _ProductsState extends State<Products> {
   final Cart _cart = Cart(); // Use the Cart singleton
 
+  // Method to show a snackbar notification
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 1), // Adjust the duration as needed
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +87,7 @@ class _ProductsState extends State<Products> {
                     onPressed: () {
                       _cart.addToCart(
                           item); // Add item to cart using the singleton
+                      _showSnackBar('Added to Cart'); // Show notification
                     },
                     child: const Icon(Icons.add_shopping_cart),
                   ),
@@ -104,8 +115,23 @@ class CartPage1 extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.delete_forever_outlined),
             onPressed: () {
+              // Show notification
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('All items removed from cart'),
+                ),
+              );
+
               // Clear all items in the cart
               cartItems.clear();
+
+              // Reload the page
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CartPage1(cartItems: []),
+                ),
+              );
             },
           ),
         ],
